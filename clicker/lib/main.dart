@@ -1,10 +1,8 @@
-import 'package:clicker/MainPage.dart';
-
-import 'MainPage.dart';
+import 'package:clicker/Principales/MainPage.dart';
 
 import 'package:flutter/material.dart';
-import 'clicker.dart';
-import 'login.dart';
+import 'Principales/clicker.dart';
+import 'Principales/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: "Clicker",
       initialRoute: "/Login",
       routes: {
-        "/Clicker": (BuildContext context) => ClickerMain(),
+        "/Clicker": (BuildContext context) => Principal(),
         "/Login": (BuildContext context) => MainPage(),
         "/Register": (BuildContext context) => Register()
       },

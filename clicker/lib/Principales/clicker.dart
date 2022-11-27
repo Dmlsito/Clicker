@@ -1,16 +1,20 @@
 //ignore_for_file: unnecessary_import, use_key_in_widget_constructors, override_on_non_overriding_member, avoid_unnecessary_containers, prefer_const_constructors, prefer_interpolation_to_compose_strings, duplicate_ignore, prefer_const_literals_to_create_immutables, sort_child_properties_last, avoid_print
 
+import 'package:clicker/Complementos/NivelesDeMejoras.dart';
+import 'package:clicker/Complementos/snackBars.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'Usuario.dart';
-import 'main.dart';
-import 'monstruo.dart';
+
+import '../Constructores/Usuario.dart';
+import "package:clicker/main.dart";
+
+import '../Constructores/monstruo.dart';
 import 'dart:math';
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 
-class ClickerMain extends StatelessWidget {
+class Principal extends StatelessWidget {
   @override
   Widget build(Object context) {
     return Scaffold(
@@ -284,7 +288,7 @@ int veneno = 0;
 // ir actualizando la barra de vida
 double v = 1;
 
-//Variable para ir actualizando la barra de mejora
+//Variable para ir controlando la vida del monstruo
 double valorMejora = 0;
 // Casos de vidaMax para comparacion
 double vidaMax100 = vida;
@@ -298,6 +302,28 @@ double vidaMax30 = (vida * 0.3);
 double vidaMax20 = (vida * 0.2);
 double vidaMax10 = (vida * 0.1);
 
+//Variables para ir controlando la vida del jugador
+double vidaJugador = 10000;
+
+double retornadorDeValorVida = 1;
+
+double vidaMax = vidaJugador;
+double vidaJugador90 = (vidaJugador * 0.9);
+double vidaJugador80 = (vidaJugador * 0.8);
+double vidaJugador70 = (vidaJugador * 0.7);
+double vidaJugador60 = (vidaJugador * 0.6);
+double vidaJugador50 = (vidaJugador * 0.5);
+double vidaJugador40 = (vidaJugador * 0.4);
+double vidaJugador30 = (vidaJugador * 0.3);
+double vidaJugador20 = (vidaJugador * 0.2);
+double vidaJugador10 = (vidaJugador * 0.1);
+
+//Boleanos para controlar los turnos de ataque de cada parte
+bool turnoJugador = true;
+bool turnoMonstruo = false;
+
+//Ataque del monstruo (provisional)
+double golpeMonstruo = 100;
 // En el caso 0 no necesito esta variable
 Color verde = Color(0xff00FF00);
 // Variable Color para la barra de vida
@@ -314,15 +340,19 @@ final player2 = AudioPlayer();
 // Variables para ancho y alto de pantalla para ventana emergente
 var anchoPantalla, alturaPantalla, size;
 
+//Instacia de la clase NivelesDeMejora
+NivelesDeMejoras incrementoMejoras = NivelesDeMejoras();
+
+//Instancia de la clase SnackBars
+
+SnackBars snackBars = new SnackBars();
+
 class StatesApp extends StatefulWidget {
   @override
   StatesAppState createState() => StatesAppState();
 }
 
 class StatesAppState extends State<StatesApp> {
-// //Variables para cambiar de monstruo
-//   double vida = listaMonstruos[contador].vida;
-
   @override
   Widget build(BuildContext context) {
     setState(() {
@@ -331,239 +361,71 @@ class StatesAppState extends State<StatesApp> {
       anchoPantalla = size.width;
     });
 
-    final usuario = ModalRoute.of(context)!.settings.arguments as Usuario;
+    //Funcion para controlar el ataque del monstruo
+    void ataqueMonstruo() {
+      if (turnoMonstruo == true) {
+        //Cuando se haya realizado el ataque del monstruo se seteara a false su turno y el turno del jugador se volvera a activar
+        turnoMonstruo = false;
+        turnoJugador = true;
+        setState(() {
+          //El monstruo realiza el ataque
+          vidaJugador = vidaJugador - golpeMonstruo;
+        });
+      }
+    }
+
     //Fucion vidaResta
     void vidaResta() {
-      // Resto uno de vida y sumo 5 monedas
-      setState(() {
-        temporizadorDeCritico++;
-        vida = vida - golpeGlobal;
-        // print("Vida: " + vida.toString());
-        monedasJugador = monedasJugador + monedasRecibidas;
-        // print("Monedas: " + monedasJugador.toString());
-        if (vida < 0) {
-          //Cuando el monstruo muere sonara esto
-          player.play(AssetSource("SonidoMuerteMonstruo.mp3"));
+      if (turnoJugador == true) {
+        //Cuando ya se haya gastado el turno del jugador seteamos al false y setemaos el turno del monstruo a true
+        turnoJugador = false;
+        turnoMonstruo = true;
+        print(turnoJugador);
+        // Resto uno de vida y sumo 5 monedas
+        setState(() {
+          temporizadorDeCritico++;
+          vida = vida - golpeGlobal;
+          // print("Vida: " + vida.toString());
+          monedasJugador = monedasJugador + monedasRecibidas;
+          // print("Monedas: " + monedasJugador.toString());
+          if (vida < 0) {
+            //Cuando el monstruo muere sonara esto
+            player.play(AssetSource("SonidoMuerteMonstruo.mp3"));
 
-          contador++;
-          // Cambiamos de monstruo en función al contador por lo que asignamos a las variables su vida y su ruta de imagen
-          vida = listaMonstruos[contador].vida;
-          rutaMonstruo = listaMonstruos[contador].imagenRuta;
-          // Actualizo las variables para barra de vida
-          vidaMax90 = (vida * 0.9);
-          vidaMax80 = (vida * 0.8);
-          vidaMax70 = (vida * 0.7);
-          vidaMax60 = (vida * 0.6);
-          vidaMax50 = (vida * 0.5);
-          vidaMax40 = (vida * 0.4);
-          vidaMax30 = (vida * 0.3);
-          vidaMax20 = (vida * 0.2);
-          vidaMax10 = (vida * 0.1);
-          v = 1;
+            contador++;
+            // Cambiamos de monstruo en función al contador por lo que asignamos a las variables su vida y su ruta de imagen
+            vida = listaMonstruos[contador].vida;
+            rutaMonstruo = listaMonstruos[contador].imagenRuta;
+            // Actualizo las variables para barra de vida
+            vidaMax90 = (vida * 0.9);
+            vidaMax80 = (vida * 0.8);
+            vidaMax70 = (vida * 0.7);
+            vidaMax60 = (vida * 0.6);
+            vidaMax50 = (vida * 0.5);
+            vidaMax40 = (vida * 0.4);
+            vidaMax30 = (vida * 0.3);
+            vidaMax20 = (vida * 0.2);
+            vidaMax10 = (vida * 0.1);
+            v = 1;
 
-          //Controlamos que si ha matado mas de 3 mundos pero menos de 6 el mundo se actualizara
-          if (contador >= 3 && contador <= 6) {
-            indexImagen = 1;
+            //Controlamos que si ha matado mas de 3 mundos pero menos de 6 el mundo se actualizara
+            if (contador >= 3 && contador <= 6) {
+              indexImagen = 1;
+            }
+            if (contador >= 6 && contador <= 9) {
+              indexImagen = 2;
+            }
+            if (contador >= 9 && contador <= 13) {
+              indexImagen = 3;
+            }
           }
-          if (contador >= 6 && contador <= 9) {
-            indexImagen = 2;
-          }
-          if (contador >= 9 && contador <= 13) {
-            indexImagen = 3;
-          }
-        }
-      });
+        });
+      }
     }
 
     //Funcion para la musica
     void playFile(String url) {
       player.play(AssetSource(url));
-    }
-
-    //SnakBar para mostrar el maxima de mejora alcanzado
-    void mostrarMaximaMejora(BuildContext context) {
-      final snb = SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.thumb_up),
-            SizedBox(
-              width: 20,
-            ),
-            Text(mensajeMaximaMejora)
-          ],
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snb);
-    }
-
-    //SnackBar para mostrar que se ha comprado una mejora
-    void mostrarMejoraComprada(BuildContext context) {
-      final snb = SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.thumb_up),
-            SizedBox(
-              width: 20,
-            ),
-            Text("Mejora comprada")
-          ],
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snb);
-    }
-
-    //SnackBar para mostrar que se ha comprado una mejora
-    void bolaDeFuegoActivada(BuildContext context) {
-      final snb = SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.thumb_up),
-            SizedBox(
-              width: 20,
-            ),
-            Text("Bola de fuego activada")
-          ],
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snb);
-    }
-
-    void bolaDeFuegoDesactivada(BuildContext context) {
-      final snb = SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.thumb_up),
-            SizedBox(
-              width: 20,
-            ),
-            Text("No se puede utilizar la bola de fuego")
-          ],
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snb);
-    }
-
-    //SnackBars de bufos
-    void bufoEspada(BuildContext context) {
-      final snb = SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.thumb_up),
-            SizedBox(
-              width: 20,
-            ),
-            Text("La espada ha sido bufada")
-          ],
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snb);
-    }
-
-    void bufoVeneno(BuildContext context) {
-      final snb = SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.thumb_up),
-            SizedBox(
-              width: 20,
-            ),
-            Text("El veneno ha sido bufado")
-          ],
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snb);
-    }
-
-    void bufoArco(BuildContext context) {
-      final snb = SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.thumb_up),
-            SizedBox(
-              width: 20,
-            ),
-            Text("El arco ha sido bufado")
-          ],
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snb);
-    }
-
-    //SnackBars de mejoras de escarcha
-    void escarchaON(BuildContext context) {
-      final snb = SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.thumb_up),
-            SizedBox(
-              width: 20,
-            ),
-            Text("Una tormenta ha comenzado")
-          ],
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snb);
-    }
-
-    void escarchaOF(BuildContext context) {
-      final snb = SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.thumb_up),
-            SizedBox(
-              width: 20,
-            ),
-            Text("La tormenta ha finaizado")
-          ],
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snb);
-    }
-
-    //SnackBar de mejora10:
-    void venenoV1(BuildContext context) {
-      final snb = SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.thumb_up),
-            SizedBox(
-              width: 20,
-            ),
-            Text("Veneno de nivel bajo aplicado")
-          ],
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snb);
-    }
-
-    void venenoV2(BuildContext context) {
-      final snb = SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.thumb_up),
-            SizedBox(
-              width: 20,
-            ),
-            Text("Veneno de nivel medio aplicado")
-          ],
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snb);
-    }
-
-    void venenoV3(BuildContext context) {
-      final snb = SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.thumb_up),
-            SizedBox(
-              width: 20,
-            ),
-            Text("Veneno de nivel alto aplicado")
-          ],
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snb);
     }
 
     //Lista de mejoras:
@@ -582,7 +444,7 @@ class StatesAppState extends State<StatesApp> {
         });
         mejora1V1 = true;
 
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
         golpeSencillo = golpeSencillo * 2;
         contadorMejora1++;
       }
@@ -594,7 +456,7 @@ class StatesAppState extends State<StatesApp> {
         });
         mejora1V2 = true;
 
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
         golpeSencillo = golpeSencillo * 3;
         contadorMejora1++;
       }
@@ -604,8 +466,8 @@ class StatesAppState extends State<StatesApp> {
           player.play(AssetSource("SonidoEspada.mp3"));
         });
         mejora1V3 = true;
-        mostrarMejoraComprada(context);
-        mostrarMaximaMejora(context);
+        snackBars.mostrarMejoraComprada(context);
+        snackBars.mostrarMaximaMejora(context);
         golpeSencillo = golpeSencillo * 4;
         contadorMejora1++;
       }
@@ -616,7 +478,7 @@ class StatesAppState extends State<StatesApp> {
         });
         //Indicamos que el bufo ya se ha utilizado
 
-        bufoEspada(context);
+        snackBars.bufoEspada(context);
         //Aplicamos la mejora del bufo al daño del click
         golpeSencillo = golpeSencillo * 8;
       }
@@ -631,7 +493,7 @@ class StatesAppState extends State<StatesApp> {
           player.play(AssetSource("SonidoFlecha.mp3"));
           monedasJugador = monedasJugador - precio1Mejora2;
         });
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
         monedasRecibidas = 10;
         contadorMejora2++;
       }
@@ -642,7 +504,7 @@ class StatesAppState extends State<StatesApp> {
           player.play(AssetSource("SonidoFlecha.mp3"));
           monedasJugador = monedasJugador - precio2Mejora2;
         });
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
         monedasRecibidas = 20;
         contadorMejora2++;
       }
@@ -652,8 +514,8 @@ class StatesAppState extends State<StatesApp> {
           monedasJugador = monedasJugador - precio3Mejora2;
         });
         mejora2V3 = true;
-        mostrarMejoraComprada(context);
-        mostrarMaximaMejora(context);
+        snackBars.mostrarMejoraComprada(context);
+        snackBars.mostrarMaximaMejora(context);
         monedasRecibidas = 30;
         contadorMejora2++;
       }
@@ -663,7 +525,7 @@ class StatesAppState extends State<StatesApp> {
           monedasJugador = monedasJugador;
         });
 
-        bufoArco(context);
+        snackBars.bufoArco(context);
         monedasRecibidas = 60;
       }
     }
@@ -717,7 +579,7 @@ class StatesAppState extends State<StatesApp> {
         });
         contadorMejora4++;
 
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
       }
       if (contadorMejora4 == 1 && monedasJugador >= precio2Mejora4) {
         mejora4V2 = true;
@@ -731,7 +593,7 @@ class StatesAppState extends State<StatesApp> {
           monedasJugador = monedasJugador - precio2Mejora4;
         });
         contadorMejora4++;
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
       }
       if (contadorMejora4 == 2 && monedasJugador >= precio3Mejora4) {
         danoFuego = bolaFuegoV3;
@@ -745,8 +607,8 @@ class StatesAppState extends State<StatesApp> {
         });
         contadorMejora4++;
 
-        mostrarMejoraComprada(context);
-        mostrarMaximaMejora(context);
+        snackBars.mostrarMejoraComprada(context);
+        snackBars.mostrarMaximaMejora(context);
       }
       if (contadorMejora4 > 2 && bolaFuegoActivada == false) {
         timer2 = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -757,7 +619,7 @@ class StatesAppState extends State<StatesApp> {
           }
 
           if (segundos2 == 60) {
-            bolaDeFuegoActivada(context);
+            snackBars.bolaDeFuegoActivada(context);
             //Cuando hayan pasado los veinte segundos podremos utilizar la habilidad
             bolaFuegoActivada = true;
             //Seteamos la variable a false, para que el temporizador no se vuelva a incrementar
@@ -767,6 +629,7 @@ class StatesAppState extends State<StatesApp> {
         });
       }
       if (bolaFuegoActivada == true && monedasJugador > precio4Mejora4) {
+        snackBars.mostrarMejoraComprada(context);
         danoFuego = bolaFuegoVFinal;
         setState(() {
           vida = vida - danoFuego;
@@ -798,7 +661,7 @@ class StatesAppState extends State<StatesApp> {
           player.play(AssetSource("SonidoSuerte.mp3"));
         });
         mejora5V1 = true;
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
         monedasGanadasPorImagen = 500;
         contadorMejora5++;
 
@@ -812,7 +675,7 @@ class StatesAppState extends State<StatesApp> {
           player.play(AssetSource("SonidoSuerte.mp3"));
         });
         mejora5V2 = true;
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
         monedasGanadasPorImagen = 750;
         contadorMejora5++;
 
@@ -825,8 +688,8 @@ class StatesAppState extends State<StatesApp> {
           player.play(AssetSource("SonidoSuerte.mp3"));
         });
         mejora5V3 = true;
-        mostrarMejoraComprada(context);
-        mostrarMaximaMejora(context);
+        snackBars.mostrarMejoraComprada(context);
+        snackBars.mostrarMaximaMejora(context);
         monedasGanadasPorImagen = 1000;
         contadorMejora5++;
         imagenAleatoria = "assets/ImagenAleatoria.png";
@@ -847,7 +710,7 @@ class StatesAppState extends State<StatesApp> {
 
     void mejora6() {
       if (contadorMejora6 == 0 && monedasJugador > precio1Mejora6) {
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
         //En este primer nivel de mejora el jugador tendra un 20% de probabilidad de q la bomba explote
         Random bombaVersion1 = Random();
         int rngBomba = bombaVersion1.nextInt(4);
@@ -867,7 +730,7 @@ class StatesAppState extends State<StatesApp> {
         contadorMejora6++;
       }
       if (contadorMejora6 == 1 && monedasJugador > precio2Mejora6) {
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
         //En este primer nivel de mejora el jugador tendra un 37.5% de probabilidad de q la bomba explote
         Random bombaVersion2 = Random();
         int rngBomba = bombaVersion2.nextInt(3);
@@ -885,7 +748,8 @@ class StatesAppState extends State<StatesApp> {
       }
 
       if (contadorMejora6 == 2 && monedasJugador > precio3Mejora6) {
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
+        snackBars.mostrarMaximaMejora(context);
         //En este primer nivel de mejora el jugador tendra un 37.5% de probabilidad de q la bomba explote
         Random bombaVersion2 = Random();
         int rngBomba = bombaVersion2.nextInt(1);
@@ -901,8 +765,8 @@ class StatesAppState extends State<StatesApp> {
         contadorMejora6++;
       }
       if (contadorMejora6 > 2 && monedasJugador > precio3Mejora6) {
-        mostrarMejoraComprada(context);
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
+
         Random bombaVersion2 = Random();
         int rngBomba = bombaVersion2.nextInt(1);
         setState(() {
@@ -919,7 +783,7 @@ class StatesAppState extends State<StatesApp> {
 
     void mejora7() {
       if (contadorMejora7 == 0 && monedasJugador > precio1Mejora7) {
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
         setState(() {
           //Actualizamos el numero de bombas que tenemos
           bombas = bombas + cantidadBombasV1;
@@ -934,7 +798,7 @@ class StatesAppState extends State<StatesApp> {
         contadorMejora7++;
       }
       if (contadorMejora7 == 1 && monedasJugador > precio2Mejora7) {
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
         setState(() {
           bombas = bombas + cantidadBombasV2;
           monedasJugador = monedasJugador - precio2Mejora7;
@@ -945,8 +809,8 @@ class StatesAppState extends State<StatesApp> {
         contadorMejora7++;
       }
       if (contadorMejora7 == 2 && monedasJugador > precio3Mejora7) {
-        mostrarMejoraComprada(context);
-        mostrarMaximaMejora(context);
+        snackBars.mostrarMejoraComprada(context);
+        snackBars.mostrarMaximaMejora(context);
         setState(() {
           bombas = bombas + cantidadBombasV3;
           monedasJugador = monedasJugador - precio3Mejora7;
@@ -974,7 +838,7 @@ class StatesAppState extends State<StatesApp> {
           precioMejoraGlobal8 = precio2Mejora8;
           player.play(AssetSource("SonidoActivacionBufo.mp3"));
         });
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
 
         contadorMejora8++;
 
@@ -982,6 +846,7 @@ class StatesAppState extends State<StatesApp> {
       }
     }
 
+    //Mejora 9
     void mejora9() {
       if (contadorMejora9 == 0 && monedasJugador > precio1Mejora9) {
         duracionTormenta = 30;
@@ -994,8 +859,8 @@ class StatesAppState extends State<StatesApp> {
           player.play(AssetSource("RuidoTormenta.mp3"));
         });
         contadorMejora9++;
-        mostrarMejoraComprada(context);
-        escarchaON(context);
+        snackBars.mostrarMejoraComprada(context);
+        snackBars.escarchaON(context);
         timer3 = Timer.periodic(Duration(seconds: 1), (timer) {
           if (lluviaHeladaV1 == true) {
             setState(() {
@@ -1010,7 +875,7 @@ class StatesAppState extends State<StatesApp> {
               duracionTormenta = 30;
               //Indicamos que la lluvia helada ha parado
               lluviaHeladaV1 = false;
-              escarchaOF(context);
+              snackBars.escarchaOF(context);
             }
           }
         });
@@ -1018,14 +883,14 @@ class StatesAppState extends State<StatesApp> {
       if (contadorMejora9 == 1 && monedasJugador > precio2Mejora9) {
         duracionTormenta = 60;
         mejora9V2 = true;
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
         setState(() {
           player.play(AssetSource("RuidoTormenta.mp3"));
           precioMejoraGlobal9 = precio3Mejora9;
           monedasJugador = monedasJugador - precio2Mejora9;
         });
         contadorMejora9++;
-        escarchaON(context);
+        snackBars.escarchaON(context);
         timer3 = Timer.periodic(Duration(seconds: 1), (timer) {
           if (lluviaHeladaV2 == true) {
             setState(() {
@@ -1036,7 +901,7 @@ class StatesAppState extends State<StatesApp> {
             if (duracionTormenta == 0) {
               duracionTormenta = 60;
               lluviaHeladaV2 = false;
-              escarchaOF(context);
+              snackBars.escarchaOF(context);
             }
           }
         });
@@ -1044,14 +909,14 @@ class StatesAppState extends State<StatesApp> {
       if (contadorMejora9 == 2 && monedasJugador > precio3Mejora9) {
         duracionTormenta = 90;
         mejora9V3 = true;
-        mostrarMejoraComprada(context);
-        mostrarMaximaMejora(context);
+        snackBars.mostrarMejoraComprada(context);
+        snackBars.mostrarMaximaMejora(context);
         setState(() {
           player.play(AssetSource("RuidoTormenta.mp3"));
           monedasJugador = monedasJugador - precio3Mejora9;
         });
         contadorMejora9++;
-        escarchaON(context);
+        snackBars.escarchaON(context);
         timer3 = Timer.periodic(Duration(seconds: 1), (timer) {
           if (lluviaHeladaV3 == true) {
             duracionTormenta--;
@@ -1065,19 +930,19 @@ class StatesAppState extends State<StatesApp> {
               lluviaHeladaV3 = false;
 
               duracionTormenta = 90;
-              escarchaOF(context);
+              snackBars.escarchaOF(context);
             }
           }
         });
       }
       if (contadorMejora9 > 2 && monedasJugador > precio3Mejora9) {
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
         setState(() {
           player.play(AssetSource("RuidoTormenta.mp3"));
           monedasJugador = monedasJugador - precio3Mejora9;
         });
         contadorMejora9++;
-        escarchaON(context);
+        snackBars.escarchaON(context);
         timer3 = Timer.periodic(Duration(seconds: 1), (timer) {
           if (lluviaHeladaV3 == true) {
             duracionTormenta--;
@@ -1090,7 +955,7 @@ class StatesAppState extends State<StatesApp> {
             if (duracionTormenta == 90) {
               duracionTormenta = 0;
               lluviaHeladaV3 = false;
-              escarchaOF(context);
+              snackBars.escarchaOF(context);
             }
           }
         });
@@ -1105,9 +970,9 @@ class StatesAppState extends State<StatesApp> {
         //Seteamos el indicador de mejora a true
         mejora10V1 = true;
         //Mostramos un snackBar que nos diga que la mejora esta comprada
-        mostrarMejoraComprada(context);
+        snackBars.mostrarMejoraComprada(context);
         //Mostramos un snackBar para indicar que el monstruo ha sido envenenado
-        venenoV1(context);
+        snackBars.venenoV1(context);
         //Incrementamos el contador de la mejora
         contadorMejora10++;
         setState(() {
@@ -1132,8 +997,8 @@ class StatesAppState extends State<StatesApp> {
       if (contadorMejora10 == 1 && monedasJugador > precio2Mejora10) {
         veneno = 200;
         mejora10V2 = true;
-        mostrarMejoraComprada(context);
-        venenoV2(context);
+        snackBars.mostrarMejoraComprada(context);
+        snackBars.venenoV2(context);
         contadorMejora10++;
         setState(() {
           player.play(AssetSource("Veneno.mp3"));
@@ -1151,9 +1016,9 @@ class StatesAppState extends State<StatesApp> {
       if (contadorMejora10 == 2 && monedasJugador > precio3Mejora10) {
         veneno = 300;
         mejora10V3 = true;
-        mostrarMejoraComprada(context);
-        mostrarMaximaMejora(context);
-        venenoV3(context);
+        snackBars.mostrarMejoraComprada(context);
+        snackBars.mostrarMaximaMejora(context);
+        snackBars.venenoV3(context);
         contadorMejora10++;
         setState(() {
           monedasJugador = monedasJugador - precio3Mejora10;
@@ -1175,10 +1040,11 @@ class StatesAppState extends State<StatesApp> {
           monedasJugador = monedasJugador;
           vida = vida - veneno;
         });
-        bufoVeneno(context);
+        snackBars.bufoVeneno(context);
       }
     }
 
+    //Funcion de manejo de utilizacion bombas
     void usarBomba() {
       if (bombas > 0) {
         setState(() {
@@ -1199,12 +1065,49 @@ class StatesAppState extends State<StatesApp> {
           : golpeGlobal = golpeSencillo;
     }
 
-    //Funcion para controlar la aparicion del estado de veneno
+    //Funcion para barra de vida del jugador
 
-    //Funcion para barra de vida
+    double barraDeVidaJugador(retornadorDeValorDeVida) {
+      setState(() {
+        if (vidaJugador <= vidaMax && vidaJugador > vidaJugador90) {
+          retornadorDeValorVida = retornadorDeValorVida;
+        }
+        if (vidaJugador <= vidaJugador90 && vidaJugador > vidaJugador80) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.1;
+        }
+        if (vidaJugador <= vidaJugador80 && vidaJugador > vidaJugador70) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.2;
+        }
+        if (vidaJugador <= vidaJugador70 && vidaJugador > vidaJugador60) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.3;
+        }
+        if (vidaJugador <= vidaJugador60 && vidaJugador > vidaJugador50) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.4;
+        }
+        if (vidaJugador <= vidaJugador50 && vidaJugador > vidaJugador40) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.5;
+        }
+        if (vidaJugador <= vidaJugador40 && vidaJugador > vidaJugador30) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.6;
+        }
+        if (vidaJugador <= vidaJugador30 && vidaJugador > vidaJugador20) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.7;
+        }
+        if (vidaJugador <= vidaJugador20 && vidaJugador > vidaJugador10) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.8;
+        }
+        if (vidaJugador <= vidaJugador10 && vidaJugador > 0) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.9;
+        }
+        if (vidaJugador == 0) {
+          retornadorDeValorVida = 0;
+        }
+      });
+      return retornadorDeValorVida;
+    }
+
+    //Funcion para barra de vida mosntruo
     double controladorBarra(v) {
-      print(v);
-
       setState(() {
         if (vida <= vidaMax100 && vida > vidaMax90) {
           v = v;
@@ -1242,204 +1145,6 @@ class StatesAppState extends State<StatesApp> {
       });
 
       return v;
-    }
-
-    //Funciones de mejora 1 para mostrar el estado de nivel por pantalla
-    Color incremento1Mejora1() {
-      if (mejora1V1) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento2Mejora1() {
-      if (mejora1V2) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento3Mejora1() {
-      if (mejora1V3) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    //Fuciones de mejora 2 para mostrar el estado de nivel por pantalla
-    Color incremento1Mejora2() {
-      if (mejora2V1) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento2Mejora2() {
-      if (mejora2V2) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento3Mejora2() {
-      if (mejora2V3) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    //Funciones de mejora 3 para mostrar el estado de nivel por pantalla
-    Color incremento1Mejora3() {
-      if (mejora3V1) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento2Mejora3() {
-      if (mejora3V2) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento3Mejora3() {
-      if (mejora3V3) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    //Funciones de mejora 4 para mostrar el estado de nivel por pantalla
-    Color incremento1Mejora4() {
-      if (mejora4V1) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento2Mejora4() {
-      if (mejora4V2) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento3Mejora4() {
-      if (mejora4V3) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    //Funciones de mejora 5 para mostrar el estado de nivel por pantalla
-    Color incremento1Mejora5() {
-      if (mejora5V1) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento2Mejora5() {
-      if (mejora5V2) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento3Mejora5() {
-      if (mejora5V3) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    //Funciones de mejora 6 para mostrar el estado de nivel por pantalla
-    Color incremento1Mejora6() {
-      if (mejora6V1) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento2Mejora6() {
-      if (mejora6V2) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento3Mejora6() {
-      if (mejora6V3) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    //Funciones de mejora 7 para mostrar el estado de nivel por pantalla
-    Color incremento1Mejora7() {
-      if (mejora7V1) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento2Mejora7() {
-      if (mejora7V2) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento3Mejora7() {
-      if (mejora7V3) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento1Mejora9() {
-      if (mejora9V1) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento2Mejora9() {
-      if (mejora9V2) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento3Mejora9() {
-      if (mejora9V3) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    //Funciones de mejora 10 para mostrar el estado de nivel por pantalla
-
-    Color incremento1Mejora10() {
-      if (mejora10V1) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento2Mejora10() {
-      if (mejora10V2) {
-        return verde;
-      }
-      return transparent;
-    }
-
-    Color incremento3Mejora10() {
-      if (mejora10V3) {
-        return verde;
-      }
-      return transparent;
     }
 
     return MaterialApp(
@@ -1579,22 +1284,20 @@ class StatesAppState extends State<StatesApp> {
                       ]),
                     ),
 
-                    //Container con el nombre de usuario y mosntruo
-
+                    //Container con la barra de vida del jugador
                     Container(
                         margin: EdgeInsets.only(
-                          top: alturaPantalla * 0.23,
-                          left: anchoPantalla * 0.15,
+                          top: alturaPantalla * 0.15,
                         ),
-                        height: 27,
-                        child: Text(
-                            usuario.nombre.toString() +
-                                " VS " +
-                                listaMonstruos[contador].nombre,
-                            style: TextStyle(
-                                fontSize: 28,
-                                color: colorLetras,
-                                fontFamily: "caps"))),
+                        width: anchoPantalla,
+                        height: 10,
+                        child: LinearProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(ColorValue),
+                            backgroundColor: Colors.redAccent,
+                            value: barraDeVidaJugador(retornadorDeValorVida)
+                            //Llamamos a la funcion que retorne
+                            )),
 
                     //Container with monster´s image
                     Container(
@@ -1604,6 +1307,7 @@ class StatesAppState extends State<StatesApp> {
                       child: Column(children: [
                         InkWell(
                           onTap: () {
+                            ataqueMonstruo();
                             critico();
                             vidaResta();
                             setState(() {
@@ -1804,7 +1508,7 @@ class StatesAppState extends State<StatesApp> {
                               fit: BoxFit.cover),
                           border: Border.all(color: Colors.yellowAccent)),
                       margin: EdgeInsets.only(top: alturaPantalla * 0.72),
-                      height: 220.0,
+                      height: alturaPantalla * 0.28,
                       child: ListView(
                         // This next line does the trick.
                         scrollDirection: Axis.horizontal,
@@ -1932,7 +1636,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento1Mejora1(),
+                                        color: incrementoMejoras
+                                            .incremento1Mejora1(mejora1V1),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -1941,7 +1646,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento2Mejora1(),
+                                        color: incrementoMejoras
+                                            .incremento2Mejora1(mejora1V2),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -1950,7 +1656,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento3Mejora1(),
+                                        color: incrementoMejoras
+                                            .incremento3Mejora1(mejora1V3),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2127,7 +1834,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento1Mejora2(),
+                                        color: incrementoMejoras
+                                            .incremento1Mejora2(mejora2V1),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2136,7 +1844,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento2Mejora2(),
+                                        color: incrementoMejoras
+                                            .incremento2Mejora2(mejora2V2),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2145,7 +1854,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento3Mejora2(),
+                                        color: incrementoMejoras
+                                            .incremento3Mejora2(mejora2V3),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2319,7 +2029,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento1Mejora3(),
+                                        color: incrementoMejoras
+                                            .incremento1Mejora3(mejora3V1),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2328,7 +2039,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento2Mejora3(),
+                                        color: incrementoMejoras
+                                            .incremento2Mejora3(mejora3V2),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2337,7 +2049,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento3Mejora3(),
+                                        color: incrementoMejoras
+                                            .incremento3Mejora3(mejora3V3),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2352,6 +2065,8 @@ class StatesAppState extends State<StatesApp> {
                                       onTap: () {
                                         if (contadorMejora3 == 0 &&
                                             monedasJugador >= precio1Mejora3) {
+                                          snackBars
+                                              .mostrarMejoraComprada(context);
                                           controladorContador1 = true;
                                           mejora3V1 = true;
                                           setState(() {
@@ -2367,6 +2082,8 @@ class StatesAppState extends State<StatesApp> {
                                         }
                                         if (contadorMejora3 == 1 &&
                                             monedasJugador >= precio2Mejora3) {
+                                          snackBars
+                                              .mostrarMejoraComprada(context);
                                           controladorContador1 = false;
                                           controladorContador2 = true;
 
@@ -2387,8 +2104,10 @@ class StatesAppState extends State<StatesApp> {
                                             monedasJugador >= precio3Mejora3) {
                                           controladorContador2 = false;
                                           controladorContador3 = true;
-
-                                          mostrarMaximaMejora(context);
+                                          snackBars
+                                              .mostrarMejoraComprada(context);
+                                          snackBars
+                                              .mostrarMaximaMejora(context);
                                           mejora3V3 = true;
                                           contadorMejora3++;
                                           dps1(contadorMejora3);
@@ -2403,6 +2122,8 @@ class StatesAppState extends State<StatesApp> {
 
                                         if (contadorMejora3 > 2 &&
                                             monedasJugador > precio3Mejora3) {
+                                          snackBars
+                                              .mostrarMejoraComprada(context);
                                           dps1(contadorMejora3);
                                           setState(() {
                                             monedasJugador =
@@ -2571,7 +2292,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento1Mejora4(),
+                                        color: incrementoMejoras
+                                            .incremento1Mejora4(mejora4V1),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2580,7 +2302,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento2Mejora4(),
+                                        color: incrementoMejoras
+                                            .incremento2Mejora4(mejora4V2),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2589,7 +2312,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento3Mejora4(),
+                                        color: incrementoMejoras
+                                            .incremento3Mejora4(mejora4V3),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2762,7 +2486,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento1Mejora5(),
+                                        color: incrementoMejoras
+                                            .incremento1Mejora5(mejora5V1),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2771,7 +2496,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento2Mejora5(),
+                                        color: incrementoMejoras
+                                            .incremento2Mejora5(mejora5V2),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2780,7 +2506,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento3Mejora5(),
+                                        color: incrementoMejoras
+                                            .incremento3Mejora5(mejora5V3),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2954,7 +2681,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento1Mejora6(),
+                                        color: incrementoMejoras
+                                            .incremento1Mejora6(mejora6V1),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2963,7 +2691,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento2Mejora6(),
+                                        color: incrementoMejoras
+                                            .incremento2Mejora6(mejora6V2),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -2972,7 +2701,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento3Mejora6(),
+                                        color: incrementoMejoras
+                                            .incremento3Mejora6(mejora6V3),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -3145,7 +2875,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento1Mejora7(),
+                                        color: incrementoMejoras
+                                            .incremento1Mejora7(mejora7V1),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -3154,7 +2885,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento2Mejora7(),
+                                        color: incrementoMejoras
+                                            .incremento2Mejora7(mejora7V2),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -3163,7 +2895,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento3Mejora7(),
+                                        color: incrementoMejoras
+                                            .incremento3Mejora7(mejora7V3),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -3499,7 +3232,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento1Mejora9(),
+                                        color: incrementoMejoras
+                                            .incremento1Mejora9(mejora9V1),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -3508,7 +3242,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento2Mejora9(),
+                                        color: incrementoMejoras
+                                            .incremento2Mejora9(mejora9V2),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -3517,7 +3252,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento3Mejora9(),
+                                        color: incrementoMejoras
+                                            .incremento3Mejora9(mejora9V3),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -3690,7 +3426,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento1Mejora10(),
+                                        color: incrementoMejoras
+                                            .incremento1Mejora10(mejora10V1),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -3699,7 +3436,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento2Mejora10(),
+                                        color: incrementoMejoras
+                                            .incremento2Mejora10(mejora10V2),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -3708,7 +3446,8 @@ class StatesAppState extends State<StatesApp> {
                                       transform: Matrix4.rotationZ(1.56),
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        color: incremento3Mejora10(),
+                                        color: incrementoMejoras
+                                            .incremento3Mejora10(mejora10V3),
                                         width: 30,
                                         height: 10,
                                       ),

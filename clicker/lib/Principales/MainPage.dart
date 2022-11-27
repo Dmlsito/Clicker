@@ -1,13 +1,11 @@
-// ignore_for_file: prefer_const_constructors, unused_import
+// ignore_for_file: prefer_const_constructors
 
-import 'package:audioplayers/audioplayers.dart';
-import 'package:clicker/MainPage.dart';
 import 'package:flutter/material.dart';
-import 'clicker.dart';
-import 'main.dart';
-import "Usuario.dart";
+import '../Constructores/Usuario.dart';
+import "package:clicker/main.dart";
+import 'package:audioplayers/audioplayers.dart';
 
-class Register extends StatelessWidget {
+class MainPage extends StatelessWidget {
   @override
   Widget build(Object context) {
     return Scaffold(
@@ -16,6 +14,7 @@ class Register extends StatelessWidget {
   }
 }
 
+//Objeto player para la musica
 final player = AudioPlayer();
 
 void playFile(String url) {
@@ -24,10 +23,10 @@ void playFile(String url) {
 
 class StatesApp extends StatefulWidget {
   @override
-  clase2 createState() => clase2();
+  clase1 createState() => clase1();
 }
 
-class clase2 extends State<StatesApp> {
+class clase1 extends State<StatesApp> {
   String nombre = '';
   String contrasena = "";
 
@@ -39,8 +38,9 @@ class clase2 extends State<StatesApp> {
       home: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("assets/Register.gif"), fit: BoxFit.cover)),
+                  image: AssetImage("assets/posible3.gif"), fit: BoxFit.cover)),
           child: Scaffold(
+              // Esto es para que el gif de fondo se vea y no este tapado por este background
               backgroundColor: Colors.transparent,
               body: Center(
                 child: Form(
@@ -48,12 +48,19 @@ class clase2 extends State<StatesApp> {
                     child: Column(
                       children: [
                         Container(
+                          margin: EdgeInsets.only(top: 50),
+                          child: Text("NelsonEsMiPadre.exe",
+                              style: TextStyle(
+                                fontSize: 33,
+                                fontFamily: "caps",
+                              )),
+                        ),
+                        Container(
                           height: 50,
-                          margin:
-                              EdgeInsets.only(top: 250, left: 80, right: 80),
+                          margin: EdgeInsets.only(top: 50, left: 80, right: 80),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                          ),
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(10)),
                           child: TextFormField(
                             decoration: InputDecoration(
                               labelText: "Nombre",
@@ -72,14 +79,14 @@ class clase2 extends State<StatesApp> {
                           height: 50,
                           margin: EdgeInsets.only(top: 20, left: 80, right: 80),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                          ),
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(10)),
                           child: TextFormField(
                             obscureText: true,
                             decoration:
                                 InputDecoration(labelText: "Contraseña"),
                             onSaved: (value) {
-                              nombre = value!;
+                              contrasena = value!;
                             },
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -88,14 +95,34 @@ class clase2 extends State<StatesApp> {
                             },
                           ),
                         ),
-                        OutlinedButton(
-                            onPressed: () {
-                              login(context);
-                            },
-                            child:
-                                Text("Login", style: TextStyle(fontSize: 20))),
                         Container(
-                          margin: EdgeInsets.only(top: 195, left: 140),
+                            margin: EdgeInsets.only(top: 20),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border:
+                                    Border.all(width: 2, color: Colors.grey)),
+                            child: OutlinedButton(
+                                onPressed: () {
+                                  login(context);
+                                },
+                                child: Text("Login",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.grey)))),
+                        Container(
+                            margin: EdgeInsets.only(top: 10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border:
+                                    Border.all(width: 2, color: Colors.grey)),
+                            child: OutlinedButton(
+                                onPressed: () {
+                                  register(context);
+                                },
+                                child: Text("Register",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.grey)))),
+                        Container(
+                          margin: EdgeInsets.only(top: 200, left: 150),
                           decoration: BoxDecoration(),
                           child: Row(
                             children: [
@@ -144,5 +171,9 @@ class clase2 extends State<StatesApp> {
       Navigator.of(context).pushNamed("/Clicker",
           arguments: Usuario(nombre: nombre, contrasena: contrasena));
     }
+  }
+
+  register(BuildContext context) {
+    Navigator.of(context).pushNamed("/Register");
   }
 }
