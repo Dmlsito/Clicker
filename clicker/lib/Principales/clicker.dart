@@ -303,7 +303,7 @@ double vidaMax20 = (vida * 0.2);
 double vidaMax10 = (vida * 0.1);
 
 //Variables para ir controlando la vida del jugador
-double vidaJugador = 10000;
+double vidaJugador = 1000;
 
 double retornadorDeValorVida = 1;
 
@@ -346,6 +346,8 @@ NivelesDeMejoras incrementoMejoras = NivelesDeMejoras();
 //Instancia de la clase SnackBars
 
 SnackBars snackBars = new SnackBars();
+Timer? timerTurno;
+int tiempoDuracionTurnoMonstruo = 5;
 
 class StatesApp extends StatefulWidget {
   @override
@@ -360,17 +362,35 @@ class StatesAppState extends State<StatesApp> {
       alturaPantalla = size.height;
       anchoPantalla = size.width;
     });
+    void ataque() {
+      setState(() {
+        //El monstruo le quita vida al jugador
+        vidaJugador = vidaJugador - golpeMonstruo;
+      });
+    }
+
+    //Creamos la funcion que controlorara el comiendo del timer
+    void startTimerTurnoMonstruo() {
+      //Creamos timer que controlara la duracion del turno del jugador
+      timerTurno = Timer.periodic(Duration(seconds: 1), (timer) {
+        tiempoDuracionTurnoMonstruo--;
+
+        if (tiempoDuracionTurnoMonstruo == 0) {
+          turnoMonstruo = false;
+          turnoJugador = true;
+
+          tiempoDuracionTurnoMonstruo = 5;
+          timerTurno?.cancel();
+          ataque();
+        }
+      });
+    }
 
     //Funcion para controlar el ataque del monstruo
     void ataqueMonstruo() {
       if (turnoMonstruo == true) {
-        //Cuando se haya realizado el ataque del monstruo se seteara a false su turno y el turno del jugador se volvera a activar
-        turnoMonstruo = false;
-        turnoJugador = true;
-        setState(() {
-          //El monstruo realiza el ataque
-          vidaJugador = vidaJugador - golpeMonstruo;
-        });
+        //Activamos el timer del turno
+        startTimerTurnoMonstruo();
       }
     }
 
@@ -1247,6 +1267,10 @@ class StatesAppState extends State<StatesApp> {
                                 });
                           },
                         )),
+                    //Container de prueba
+                    Container(
+                        child: Text(tiempoDuracionTurnoMonstruo.toString(),
+                            style: TextStyle(color: Colors.white))),
 
                     Container(
                       margin: EdgeInsets.only(
@@ -1307,9 +1331,9 @@ class StatesAppState extends State<StatesApp> {
                       child: Column(children: [
                         InkWell(
                           onTap: () {
-                            ataqueMonstruo();
                             critico();
                             vidaResta();
+                            ataqueMonstruo();
                             setState(() {
                               // playFile("assets/Theme.mp3");
                             });
