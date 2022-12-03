@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../Constructores/Usuario.dart';
 import "package:clicker/main.dart";
-
+import 'package:async/async.dart';
 import '../Constructores/monstruo.dart';
 import 'dart:math';
 import 'dart:async';
@@ -120,6 +120,7 @@ Timer? timer1;
 Timer? timer3;
 Timer? timer4;
 Timer? timer5;
+RestartableTimer timerAtaqueMonstruop = new RestartableTimer(Duration(seconds: 5),_startNew);
 // Variables para dps
 double danoDps1 = 5;
 
@@ -304,7 +305,6 @@ double vidaMax10 = (vida * 0.1);
 
 //Variables para ir controlando la vida del jugador
 double vidaJugador = 10000;
-
 double retornadorDeValorVida = 1;
 
 double vidaMax = vidaJugador;
@@ -321,6 +321,7 @@ double vidaJugador10 = (vidaJugador * 0.1);
 //Boleanos para controlar los turnos de ataque de cada parte
 bool turnoJugador = true;
 bool turnoMonstruo = false;
+int duracionTurnoAtaqueMonstruo = 0;
 
 //Ataque del monstruo (provisional)
 double golpeMonstruo = 100;
@@ -363,15 +364,31 @@ class StatesAppState extends State<StatesApp> {
 
     //Funcion para controlar el ataque del monstruo
     void ataqueMonstruo() {
-      if (turnoMonstruo == true) {
-        //Cuando se haya realizado el ataque del monstruo se seteara a false su turno y el turno del jugador se volvera a activar
-        turnoMonstruo = false;
-        turnoJugador = true;
-        setState(() {
-          //El monstruo realiza el ataque
-          vidaJugador = vidaJugador - golpeMonstruo;
+      
+        timerAtaqueMonstruo = Timer.periodic(Duration(seconds: 1), (timer) {
+          if(turnoMonstruo == true){
+        duracionTurnoAtaqueMonstruo ++;
+        }
+        //A los cinco segundos el monstruo atacara
+
+        if(duracionTurnoAtaqueMonstruo == 5){ //Cuando se haya realizado el ataque del monstruo se seteara a false su turno y el turno del jugador se volvera a activar
+
+            setState(() {
+              //El monstruo realiza el ataque
+              vidaJugador = vidaJugador - golpeMonstruo;
+              //reiniciamos el contador
+              duracionTurnoAtaqueMonstruo = 0;
+               turnoMonstruo = false;
+               turnoJugador = true;
+            });
+        }
+
+
+
         });
-      }
+        
+      
+      
     }
 
     //Fucion vidaResta
