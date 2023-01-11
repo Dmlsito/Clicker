@@ -119,8 +119,7 @@ Timer? timer2;
 Timer? timer1;
 Timer? timer3;
 Timer? timer4;
-Timer? timer5;
-RestartableTimer timerAtaqueMonstruop = new RestartableTimer(Duration(seconds: 5),_startNew);
+Timer?  timerAtaqueMonstruo;
 // Variables para dps
 double danoDps1 = 5;
 
@@ -304,7 +303,7 @@ double vidaMax20 = (vida * 0.2);
 double vidaMax10 = (vida * 0.1);
 
 //Variables para ir controlando la vida del jugador
-double vidaJugador = 10000;
+double vidaJugador = 1000;
 double retornadorDeValorVida = 1;
 
 double vidaMax = vidaJugador;
@@ -362,38 +361,10 @@ class StatesAppState extends State<StatesApp> {
       anchoPantalla = size.width;
     });
 
-    //Funcion para controlar el ataque del monstruo
-    void ataqueMonstruo() {
-      
-        timerAtaqueMonstruo = Timer.periodic(Duration(seconds: 1), (timer) {
-          if(turnoMonstruo == true){
-        duracionTurnoAtaqueMonstruo ++;
-        }
-        //A los cinco segundos el monstruo atacara
-
-        if(duracionTurnoAtaqueMonstruo == 5){ //Cuando se haya realizado el ataque del monstruo se seteara a false su turno y el turno del jugador se volvera a activar
-
-            setState(() {
-              //El monstruo realiza el ataque
-              vidaJugador = vidaJugador - golpeMonstruo;
-              //reiniciamos el contador
-              duracionTurnoAtaqueMonstruo = 0;
-               turnoMonstruo = false;
-               turnoJugador = true;
-            });
-        }
-
-
-
-        });
-        
-      
-      
-    }
-
+   
     //Fucion vidaResta
     void vidaResta() {
-      if (turnoJugador == true) {
+      
         //Cuando ya se haya gastado el turno del jugador seteamos al false y setemaos el turno del monstruo a true
         turnoJugador = false;
         turnoMonstruo = true;
@@ -438,7 +409,7 @@ class StatesAppState extends State<StatesApp> {
           }
         });
       }
-    }
+    
 
     //Funcion para la musica
     void playFile(String url) {
@@ -1082,46 +1053,7 @@ class StatesAppState extends State<StatesApp> {
           : golpeGlobal = golpeSencillo;
     }
 
-    //Funcion para barra de vida del jugador
-
-    double barraDeVidaJugador(retornadorDeValorDeVida) {
-      setState(() {
-        if (vidaJugador <= vidaMax && vidaJugador > vidaJugador90) {
-          retornadorDeValorVida = retornadorDeValorVida;
-        }
-        if (vidaJugador <= vidaJugador90 && vidaJugador > vidaJugador80) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.1;
-        }
-        if (vidaJugador <= vidaJugador80 && vidaJugador > vidaJugador70) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.2;
-        }
-        if (vidaJugador <= vidaJugador70 && vidaJugador > vidaJugador60) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.3;
-        }
-        if (vidaJugador <= vidaJugador60 && vidaJugador > vidaJugador50) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.4;
-        }
-        if (vidaJugador <= vidaJugador50 && vidaJugador > vidaJugador40) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.5;
-        }
-        if (vidaJugador <= vidaJugador40 && vidaJugador > vidaJugador30) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.6;
-        }
-        if (vidaJugador <= vidaJugador30 && vidaJugador > vidaJugador20) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.7;
-        }
-        if (vidaJugador <= vidaJugador20 && vidaJugador > vidaJugador10) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.8;
-        }
-        if (vidaJugador <= vidaJugador10 && vidaJugador > 0) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.9;
-        }
-        if (vidaJugador == 0) {
-          retornadorDeValorVida = 0;
-        }
-      });
-      return retornadorDeValorVida;
-    }
+    
 
     //Funcion para barra de vida mosntruo
     double controladorBarra(v) {
@@ -1157,7 +1089,7 @@ class StatesAppState extends State<StatesApp> {
           v = v - 0.9;
         }
         if (vida == 0) {
-          v = 0;
+          v = 0.0;
         }
       });
 
@@ -1301,20 +1233,7 @@ class StatesAppState extends State<StatesApp> {
                       ]),
                     ),
 
-                    //Container con la barra de vida del jugador
-                    Container(
-                        margin: EdgeInsets.only(
-                          top: alturaPantalla * 0.15,
-                        ),
-                        width: anchoPantalla,
-                        height: 10,
-                        child: LinearProgressIndicator(
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(ColorValue),
-                            backgroundColor: Colors.redAccent,
-                            value: barraDeVidaJugador(retornadorDeValorVida)
-                            //Llamamos a la funcion que retorne
-                            )),
+                    
 
                     //Container with monster´s image
                     Container(
@@ -1324,7 +1243,7 @@ class StatesAppState extends State<StatesApp> {
                       child: Column(children: [
                         InkWell(
                           onTap: () {
-                            ataqueMonstruo();
+                           
                             critico();
                             vidaResta();
                             setState(() {
@@ -3524,3 +3443,93 @@ class StatesAppState extends State<StatesApp> {
             )));
   }
 }
+
+
+
+
+/*Funciones adicionales de ataque del monstruo
+ //Funcion para controlar el ataque del monstruo
+    void ataqueMonstruo() {
+      
+        timerAtaqueMonstruo = Timer.periodic(Duration(seconds: 1), (timer) {
+          if(turnoMonstruo == true){
+        duracionTurnoAtaqueMonstruo ++;
+        }
+        print("seconds: " + duracionTurnoAtaqueMonstruo.toString());
+        //A los cinco segundos el monstruo atacara
+
+        if(duracionTurnoAtaqueMonstruo == 5){ //Cuando se haya realizado el ataque del monstruo se seteara a false su turno y el turno del jugador se volvera a activar
+
+            setState(() {
+              //El monstruo realiza el ataque
+              vidaJugador = vidaJugador - golpeMonstruo;
+              
+            });
+            duracionTurnoAtaqueMonstruo = 0;
+               turnoMonstruo = false;
+               turnoJugador = true;
+            timerAtaqueMonstruo?.cancel();
+        }
+});
+        
+      
+      
+    }
+
+
+    //Funcion para barra de vida del jugador
+
+    double barraDeVidaJugador(retornadorDeValorDeVida) {
+      setState(() {
+        if (vidaJugador <= vidaMax && vidaJugador > vidaJugador90) {
+          retornadorDeValorVida = retornadorDeValorVida;
+        }
+        if (vidaJugador <= vidaJugador90 && vidaJugador > vidaJugador80) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.1;
+        }
+        if (vidaJugador <= vidaJugador80 && vidaJugador > vidaJugador70) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.2;
+        }
+        if (vidaJugador <= vidaJugador70 && vidaJugador > vidaJugador60) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.3;
+        }
+        if (vidaJugador <= vidaJugador60 && vidaJugador > vidaJugador50) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.4;
+        }
+        if (vidaJugador <= vidaJugador50 && vidaJugador > vidaJugador40) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.5;
+        }
+        if (vidaJugador <= vidaJugador40 && vidaJugador > vidaJugador30) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.6;
+        }
+        if (vidaJugador <= vidaJugador30 && vidaJugador > vidaJugador20) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.7;
+        }
+        if (vidaJugador <= vidaJugador20 && vidaJugador > vidaJugador10) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.8;
+        }
+        if (vidaJugador <= vidaJugador10 && vidaJugador > 0) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.9;
+        }
+        if (vidaJugador == 0) {
+          retornadorDeValorVida = 0;
+        }
+      });
+      return retornadorDeValorVida;
+    }
+
+    //Container con la barra de vida del jugador
+                    Container(
+                        margin: EdgeInsets.only(
+                          top: alturaPantalla * 0.15,
+                        ),
+                        width: anchoPantalla,
+                        height: 10,
+                        child: LinearProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(ColorValue),
+                            backgroundColor: Colors.redAccent,
+                            value: barraDeVidaJugador(retornadorDeValorVida)
+                            //Llamamos a la funcion que retorne
+                            )),
+    */

@@ -190,4 +190,36 @@ class SnackBars {
     );
     ScaffoldMessenger.of(context).showSnackBar(snb);
   }
-}
+
+  void FalloInsertUsuario(BuildContext context){
+    final snb = SnackBar(
+      content: Row(
+        children: [
+          Icon(Icons.thumb_up),
+          SizedBox(
+            width: 20,
+          ),
+          Text("Error")
+        ],
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snb);
+  }
+
+
+  void usuarioNoEncontrado(BuildContext context){
+    final snb = SnackBar(
+      content: Row(
+        children: [
+          Icon(Icons.thumb_up),
+          SizedBox(
+            width: 20,
+          ),
+          Text("El usuairo no existe")
+        ],
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snb);
+  }
+  }
+

@@ -1,8 +1,10 @@
-// ignore_for_file: prefer_const_constructors, unused_import
+// ignore_for_file: prefer_const_constructors, unused_import, unnecessary_new, unnecessary_cast, use_build_context_synchronously
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:clicker/Principales/MainPage.dart';
 import 'package:flutter/material.dart';
+import '../Complementos/snackBars.dart';
+import '../Conexion/conexion.dart';
 import 'clicker.dart';
 import "package:clicker/main.dart";
 import '../Constructores/Usuario.dart';
@@ -79,7 +81,7 @@ class clase2 extends State<StatesApp> {
                             decoration:
                                 InputDecoration(labelText: "Contraseña"),
                             onSaved: (value) {
-                              nombre = value!;
+                              contrasena = value!;
                             },
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -90,7 +92,7 @@ class clase2 extends State<StatesApp> {
                         ),
                         OutlinedButton(
                             onPressed: () {
-                              login(context);
+                              register(context);
                             },
                             child:
                                 Text("Login", style: TextStyle(fontSize: 20))),
@@ -138,11 +140,28 @@ class clase2 extends State<StatesApp> {
     );
   }
 
-  login(BuildContext context) {
+  register(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      Navigator.of(context).pushNamed("/Clicker",
+
+      //Llamamos a la BBDD
+    Usuario usuario = new Usuario(nombre: nombre, contrasena: contrasena);
+    //Creamos un objeto conexion
+    ConnectionUser conexion = new ConnectionUser();
+
+    bool registro = await conexion.register(usuario) as bool;
+    
+    //Si devuelve un true quiere decir que la operacion se ha realizado con exito
+    if(registro){
+      Navigator.of(context).pushNamed("/Login",
           arguments: Usuario(nombre: nombre, contrasena: contrasena));
+    }else{
+      //Esto es provisional
+     SnackBars snackBar = new SnackBars();
+     snackBar.FalloInsertUsuario(context);
+    }
+    }
+  
     }
   }
-}
+

@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unnecessary_new, unnecessary_cast, use_build_context_synchronously, unused_local_variable, use_key_in_widget_constructors
 
+import 'package:clicker/Complementos/snackBars.dart';
+import 'package:clicker/Principales/clicker.dart';
 import 'package:flutter/material.dart';
+import '../Conexion/conexion.dart';
 import '../Constructores/Usuario.dart';
-import "package:clicker/main.dart";
 import 'package:audioplayers/audioplayers.dart';
-
 class MainPage extends StatelessWidget {
   @override
   Widget build(Object context) {
@@ -104,6 +105,7 @@ class clase1 extends State<StatesApp> {
                             child: OutlinedButton(
                                 onPressed: () {
                                   login(context);
+                                  
                                 },
                                 child: Text("Login",
                                     style: TextStyle(
@@ -165,12 +167,30 @@ class clase1 extends State<StatesApp> {
     );
   }
 
-  login(BuildContext context) {
+  login(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      Navigator.of(context).pushNamed("/Clicker",
-          arguments: Usuario(nombre: nombre, contrasena: contrasena));
+
+
+    //Llamamos a la BBDD
+    
+   
+    //Creamos un objeto conexion
+    ConnectionUser conexion = new ConnectionUser();
+
+    Usuario usuarioAcomprobar = await conexion.login(nombre, contrasena);
+    
+    if(usuarioAcomprobar.nombre != ""){
+      //Si el nombre no esta vacio querra decir que el usuario si que existe, por lo tanto pusheamos a la pagina principal
+       Navigator.of(context).pushNamed("/Clicker");
+    }else{
+      SnackBars snackBar = new SnackBars();
+     snackBar.usuarioNoEncontrado(context);
     }
+   
+    }
+    
+    
   }
 
   register(BuildContext context) {
