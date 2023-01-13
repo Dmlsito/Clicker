@@ -4,7 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:clicker/Principales/MainPage.dart';
 import 'package:flutter/material.dart';
 import '../Complementos/snackBars.dart';
-import '../Conexion/conexion.dart';
+import '../ConexionBBDD/conexion.dart';
 import 'clicker.dart';
 import "package:clicker/main.dart";
 import '../Constructores/Usuario.dart';

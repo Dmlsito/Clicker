@@ -32,8 +32,9 @@ class ConnectionUser{
     return comprobar;
   }
 
-  Future<Usuario> login(String nombre, String contrasena) async{
+  Future<bool>login(String nombre, String contrasena) async{
     
+    //A este usuario le daremos los valores que nos devolvera el SELECT para poder devolverlo y poder comprobar si esta vacio o no
     Usuario usuarioComprobacion = Usuario(nombre: "", contrasena: "");
     
     //Establecemos la conexion
@@ -45,25 +46,28 @@ class ConnectionUser{
         db: "nelsonesmipadre"
       )
     );
+
+
+
+    //Consulta SQL
     String sql = "select * from usuario where nombre = '" +
         nombre +
         "' and contraseña = '" +
         contrasena + 
         "'";
 
+    
+    
+    //Almacenamos lo que nos devolvera la consulta en una variable
     var comprobarUsuario = await conexion.query(sql);
     
-    //Comprobamos que el usuario no esta vacio
-    
+    //Comprobamos que el usuario no esta vacio, si no lo esta al usuario le damos los valores que hemos guardado
+    //en filas con ResultRow
     if(comprobarUsuario.isNotEmpty){
-     ResultRow row = comprobarUsuario.first;
-     usuarioComprobacion = new Usuario(nombre: row[1], contrasena: row[2]);
+    //  ResultRow row = comprobarUsuario.first;
+    //  usuarioComprobacion = new Usuario(nombre: row[0], contrasena: row[1]);
+     return true;
     }
-    return usuarioComprobacion;
-    
-    
-   
-   
-
-  }
+    return false;
+    }
 }

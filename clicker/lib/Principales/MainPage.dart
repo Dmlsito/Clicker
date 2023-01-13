@@ -3,7 +3,7 @@
 import 'package:clicker/Complementos/snackBars.dart';
 import 'package:clicker/Principales/clicker.dart';
 import 'package:flutter/material.dart';
-import '../Conexion/conexion.dart';
+import '../ConexionBBDD/conexion.dart';
 import '../Constructores/Usuario.dart';
 import 'package:audioplayers/audioplayers.dart';
 class MainPage extends StatelessWidget {
@@ -178,9 +178,9 @@ class clase1 extends State<StatesApp> {
     //Creamos un objeto conexion
     ConnectionUser conexion = new ConnectionUser();
 
-    Usuario usuarioAcomprobar = await conexion.login(nombre, contrasena);
+    bool existe = await conexion.login(nombre, contrasena);
     
-    if(usuarioAcomprobar.nombre != ""){
+    if(existe){
       //Si el nombre no esta vacio querra decir que el usuario si que existe, por lo tanto pusheamos a la pagina principal
        Navigator.of(context).pushNamed("/Clicker");
     }else{
