@@ -46,9 +46,7 @@ class ConnectionUser{
         db: "nelsonesmipadre"
       )
     );
-
-
-
+    
     //Consulta SQL
     String sql = "select * from usuario where nombre = '" +
         nombre +
@@ -56,7 +54,6 @@ class ConnectionUser{
         contrasena + 
         "'";
 
-    
     
     //Almacenamos lo que nos devolvera la consulta en una variable
     var comprobarUsuario = await conexion.query(sql);

@@ -2,6 +2,7 @@
 
 import 'package:clicker/Complementos/NivelesDeMejoras.dart';
 import 'package:clicker/Complementos/snackBars.dart';
+import 'package:clicker/RecuperacionDatos/comprobaciones.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -337,6 +338,9 @@ String mensajeMaximaMejora = "Nivel Máximo de Mejora Alcanzado";
 final player = AudioPlayer();
 final player2 = AudioPlayer();
 
+//Variable para controlar el numero de monstruo de cada mundo, 
+int numeroMonstruo = 0;
+
 // Variables para ancho y alto de pantalla para ventana emergente
 var anchoPantalla, alturaPantalla, size;
 
@@ -381,9 +385,10 @@ class StatesAppState extends State<StatesApp> {
             player.play(AssetSource("SonidoMuerteMonstruo.mp3"));
 
             contador++;
+            numeroMonstruo = contador;
             // Cambiamos de monstruo en función al contador por lo que asignamos a las variables su vida y su ruta de imagen
-            vida = listaMonstruos[contador].vida;
-            rutaMonstruo = listaMonstruos[contador].imagenRuta;
+            vida = listaMonstruos[numeroMonstruo].vida;
+            rutaMonstruo = listaMonstruos[numeroMonstruo].imagenRuta;
             // Actualizo las variables para barra de vida
             vidaMax90 = (vida * 0.9);
             vidaMax80 = (vida * 0.8);
@@ -1129,15 +1134,25 @@ class StatesAppState extends State<StatesApp> {
                                       child: Column(children: [
                                         Container(
                                           child: Center(
+                                            
                                               child: Container(
+                                                child: Row(
+                                                  children: [
+                                                     Container(
+                                                      child: IconButton(onPressed: (() {
+                                                        Comprobaciones comprobacion = new Comprobaciones();
+                                                        comprobacion.ingresarDatosJugador(indexImagen,numeroMonstruo, monedasJugador, bombas);
+                          
+                                                      }), 
+                                                      icon: Icon(Icons.abc)),
                                                   margin: EdgeInsets.only(
-                                                      top: 60, bottom: 10),
-                                                  child: Text(
+                                                      top: 60, bottom: 10)),
+                                                   Text(
                                                     "Música",
                                                     style: TextStyle(
                                                         color: Colors.white),
-                                                  ))),
-                                        ),
+                                                  )])),
+                                        )),
                                         Container(
                                             child: Row(
                                           children: [
