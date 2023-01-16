@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F0199CA7-999C-420D-A92E-926A02F059A8}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>GridView</RootNamespace>
+    <AssemblyName>GridView</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Ejercicio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ejercicio.Designer.cs">
+      <DependentUpon>Ejercicio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Empleado.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Ejercicio.resx">
+      <DependentUpon>Ejercicio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoBtnAgregarIngles.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoBtnAgregarIngles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoBtnBorrarEspañol.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoBtnBorrarEspañol.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoBtnBorrarIngles.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoBtnBorrarIngles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoBtnTextEspañol.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoBtnTextEspañol.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoItem1Español.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoItem1Español.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoItem1Ingles.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoItem1Ingles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoItem2Español.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoItem2Español.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoItem2Ingles.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoItem2Ingles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoLblApellidosEspañol.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoLblApellidosEspañol.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoLblApellidosIngles.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoLblApellidosIngles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoLblContratoFijoEspañol.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoLblContratoFijoEspañol.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoLblContratoFijoIngles.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoLblContratoFijoIngles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoLblEdadEspañol.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoLblEdadEspañol.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoLblEdadIngles.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoLblEdadIngles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoLblIdiomaEspañol.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoLblIdiomaEspañol.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoLblIdiomaIngles.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoLblIdiomaIngles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoLblNombreEspañol.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoLblNombreEspañol.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GenericoLblNombreIngles.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericoLblNombreIngles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\GenericoBtnAgregarIngles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoBtnAgregarIngles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoBtnBorrarEspañol.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoBtnBorrarEspañol.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoBtnBorrarIngles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoBtnBorrarIngles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoBtnTextEspañol.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoBtnTextEspañol.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoItem1Español.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoItem1Español.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoItem1Ingles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoItem1Ingles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoItem2Español.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoItem2Español.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoItem2Ingles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoItem2Ingles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoLblApellidosEspañol.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoLblApellidosEspañol.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoLblApellidosIngles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoLblApellidosIngles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoLblContratoFijoEspañol.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoLblContratoFijoEspañol.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoLblContratoFijoIngles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoLblContratoFijoIngles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoLblEdadEspañol.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoLblEdadEspañol.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoLblEdadIngles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoLblEdadIngles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoLblIdiomaEspañol.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoLblIdiomaEspañol.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoLblIdiomaIngles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoLblIdiomaIngles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoLblNombreEspañol.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoLblNombreEspañol.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\GenericoLblNombreIngles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericoLblNombreIngles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

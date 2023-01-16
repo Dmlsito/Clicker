@@ -1,5 +1,4 @@
 import 'package:clicker/Principales/MainPage.dart';
-
 import 'package:flutter/material.dart';
 import 'Principales/clicker.dart';
 import 'Principales/login.dart';

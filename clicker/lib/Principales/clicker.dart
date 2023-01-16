@@ -362,6 +362,7 @@ class StatesAppState extends State<StatesApp> {
       alturaPantalla = size.height;
       anchoPantalla = size.width;
     });
+    //Funcion de ataque del monstruo
     void ataque() {
       setState(() {
         //El monstruo le quita vida al jugador
@@ -373,13 +374,12 @@ class StatesAppState extends State<StatesApp> {
     void startTimerTurnoMonstruo() {
       //Creamos timer que controlara la duracion del turno del jugador
       timerTurno = Timer.periodic(Duration(seconds: 1), (timer) {
+        print("seconds : " + tiempoDuracionTurnoMonstruo.toString());
         tiempoDuracionTurnoMonstruo--;
 
         if (tiempoDuracionTurnoMonstruo == 0) {
-          turnoMonstruo = false;
-          turnoJugador = true;
-
           tiempoDuracionTurnoMonstruo = 5;
+
           timerTurno?.cancel();
           ataque();
         }
@@ -391,6 +391,8 @@ class StatesAppState extends State<StatesApp> {
       if (turnoMonstruo == true) {
         //Activamos el timer del turno
         startTimerTurnoMonstruo();
+        turnoMonstruo = false;
+        turnoJugador = true;
       }
     }
 
@@ -400,6 +402,7 @@ class StatesAppState extends State<StatesApp> {
         //Cuando ya se haya gastado el turno del jugador seteamos al false y setemaos el turno del monstruo a true
         turnoJugador = false;
         turnoMonstruo = true;
+
         print(turnoJugador);
         // Resto uno de vida y sumo 5 monedas
         setState(() {
