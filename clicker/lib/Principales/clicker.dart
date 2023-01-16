@@ -120,7 +120,7 @@ Timer? timer2;
 Timer? timer1;
 Timer? timer3;
 Timer? timer4;
-Timer?  timerAtaqueMonstruo;
+Timer? timerAtaqueMonstruo;
 // Variables para dps
 double danoDps1 = 5;
 
@@ -338,7 +338,7 @@ String mensajeMaximaMejora = "Nivel Máximo de Mejora Alcanzado";
 final player = AudioPlayer();
 final player2 = AudioPlayer();
 
-//Variable para controlar el numero de monstruo de cada mundo, 
+//Variable para controlar el numero de monstruo de cada mundo,
 int numeroMonstruo = 0;
 
 // Variables para ancho y alto de pantalla para ventana emergente
@@ -364,94 +364,55 @@ class StatesAppState extends State<StatesApp> {
       alturaPantalla = size.height;
       anchoPantalla = size.width;
     });
-<<<<<<< HEAD
-    //Funcion de ataque del monstruo
-    void ataque() {
+
+    //Fucion vidaResta
+    void vidaResta() {
+      //Cuando ya se haya gastado el turno del jugador seteamos al false y setemaos el turno del monstruo a true
+      turnoJugador = false;
+      turnoMonstruo = true;
+
+      print(turnoJugador);
+      // Resto uno de vida y sumo 5 monedas
       setState(() {
-        //El monstruo le quita vida al jugador
-        vidaJugador = vidaJugador - golpeMonstruo;
-      });
-    }
+        temporizadorDeCritico++;
+        vida = vida - golpeGlobal;
+        // print("Vida: " + vida.toString());
+        monedasJugador = monedasJugador + monedasRecibidas;
+        // print("Monedas: " + monedasJugador.toString());
+        if (vida < 0) {
+          //Cuando el monstruo muere sonara esto
+          player.play(AssetSource("SonidoMuerteMonstruo.mp3"));
 
-    //Creamos la funcion que controlorara el comiendo del timer
-    void startTimerTurnoMonstruo() {
-      //Creamos timer que controlara la duracion del turno del jugador
-      timerTurno = Timer.periodic(Duration(seconds: 1), (timer) {
-        print("seconds : " + tiempoDuracionTurnoMonstruo.toString());
-        tiempoDuracionTurnoMonstruo--;
+          contador++;
+          numeroMonstruo = contador;
+          // Cambiamos de monstruo en función al contador por lo que asignamos a las variables su vida y su ruta de imagen
+          vida = listaMonstruos[numeroMonstruo].vida;
+          rutaMonstruo = listaMonstruos[numeroMonstruo].imagenRuta;
+          // Actualizo las variables para barra de vida
+          vidaMax90 = (vida * 0.9);
+          vidaMax80 = (vida * 0.8);
+          vidaMax70 = (vida * 0.7);
+          vidaMax60 = (vida * 0.6);
+          vidaMax50 = (vida * 0.5);
+          vidaMax40 = (vida * 0.4);
+          vidaMax30 = (vida * 0.3);
+          vidaMax20 = (vida * 0.2);
+          vidaMax10 = (vida * 0.1);
+          v = 1;
 
-        if (tiempoDuracionTurnoMonstruo == 0) {
-          tiempoDuracionTurnoMonstruo = 5;
-
-          timerTurno?.cancel();
-          ataque();
+          //Controlamos que si ha matado mas de 3 mundos pero menos de 6 el mundo se actualizara
+          if (contador >= 3 && contador <= 6) {
+            indexImagen = 1;
+          }
+          if (contador >= 6 && contador <= 9) {
+            indexImagen = 2;
+          }
+          if (contador >= 9 && contador <= 13) {
+            indexImagen = 3;
+          }
         }
       });
     }
-
-    //Funcion para controlar el ataque del monstruo
-    void ataqueMonstruo() {
-      if (turnoMonstruo == true) {
-        //Activamos el timer del turno
-        startTimerTurnoMonstruo();
-        turnoMonstruo = false;
-        turnoJugador = true;
-      }
-    }
-=======
->>>>>>> 175e0d359b9cb3d14c48ef86cc1a5ba2c4ccf8f8
-
-   
-    //Fucion vidaResta
-    void vidaResta() {
-      
-        //Cuando ya se haya gastado el turno del jugador seteamos al false y setemaos el turno del monstruo a true
-        turnoJugador = false;
-        turnoMonstruo = true;
-
-        print(turnoJugador);
-        // Resto uno de vida y sumo 5 monedas
-        setState(() {
-          temporizadorDeCritico++;
-          vida = vida - golpeGlobal;
-          // print("Vida: " + vida.toString());
-          monedasJugador = monedasJugador + monedasRecibidas;
-          // print("Monedas: " + monedasJugador.toString());
-          if (vida < 0) {
-            //Cuando el monstruo muere sonara esto
-            player.play(AssetSource("SonidoMuerteMonstruo.mp3"));
-
-            contador++;
-            numeroMonstruo = contador;
-            // Cambiamos de monstruo en función al contador por lo que asignamos a las variables su vida y su ruta de imagen
-            vida = listaMonstruos[numeroMonstruo].vida;
-            rutaMonstruo = listaMonstruos[numeroMonstruo].imagenRuta;
-            // Actualizo las variables para barra de vida
-            vidaMax90 = (vida * 0.9);
-            vidaMax80 = (vida * 0.8);
-            vidaMax70 = (vida * 0.7);
-            vidaMax60 = (vida * 0.6);
-            vidaMax50 = (vida * 0.5);
-            vidaMax40 = (vida * 0.4);
-            vidaMax30 = (vida * 0.3);
-            vidaMax20 = (vida * 0.2);
-            vidaMax10 = (vida * 0.1);
-            v = 1;
-
-            //Controlamos que si ha matado mas de 3 mundos pero menos de 6 el mundo se actualizara
-            if (contador >= 3 && contador <= 6) {
-              indexImagen = 1;
-            }
-            if (contador >= 6 && contador <= 9) {
-              indexImagen = 2;
-            }
-            if (contador >= 9 && contador <= 13) {
-              indexImagen = 3;
-            }
-          }
-        });
-      }
-    
 
     //Funcion para la musica
     void playFile(String url) {
@@ -1095,8 +1056,6 @@ class StatesAppState extends State<StatesApp> {
           : golpeGlobal = golpeSencillo;
     }
 
-    
-
     //Funcion para barra de vida mosntruo
     double controladorBarra(v) {
       setState(() {
@@ -1170,25 +1129,31 @@ class StatesAppState extends State<StatesApp> {
                                           BoxDecoration(color: Colors.brown),
                                       child: Column(children: [
                                         Container(
-                                          child: Center(
-                                            
-                                              child: Container(
-                                                child: Row(
-                                                  children: [
-                                                     Container(
-                                                      child: IconButton(onPressed: (() {
-                                                        Comprobaciones comprobacion = new Comprobaciones();
-                                                        comprobacion.ingresarDatosJugador(indexImagen,numeroMonstruo, monedasJugador, bombas);
-                          
-                                                      }), 
-                                                      icon: Icon(Icons.abc)),
-                                                  margin: EdgeInsets.only(
-                                                      top: 60, bottom: 10)),
-                                                   Text(
-                                                    "Música",
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  )])),
+                                            child: Center(
+                                          child: Container(
+                                              child: Row(children: [
+                                            Container(
+                                                child: IconButton(
+                                                    onPressed: (() {
+                                                      Comprobaciones
+                                                          comprobacion =
+                                                          new Comprobaciones();
+                                                      comprobacion
+                                                          .ingresarDatosJugador(
+                                                              indexImagen,
+                                                              numeroMonstruo,
+                                                              monedasJugador,
+                                                              bombas);
+                                                    }),
+                                                    icon: Icon(Icons.abc)),
+                                                margin: EdgeInsets.only(
+                                                    top: 60, bottom: 10)),
+                                            Text(
+                                              "Música",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            )
+                                          ])),
                                         )),
                                         Container(
                                             child: Row(
@@ -1285,8 +1250,6 @@ class StatesAppState extends State<StatesApp> {
                       ]),
                     ),
 
-                    
-
                     //Container with monster´s image
                     Container(
                       margin: EdgeInsets.only(
@@ -1295,7 +1258,6 @@ class StatesAppState extends State<StatesApp> {
                       child: Column(children: [
                         InkWell(
                           onTap: () {
-                           
                             critico();
                             vidaResta();
                             setState(() {
@@ -3495,9 +3457,6 @@ class StatesAppState extends State<StatesApp> {
             )));
   }
 }
-
-
-
 
 /*Funciones adicionales de ataque del monstruo
  //Funcion para controlar el ataque del monstruo
