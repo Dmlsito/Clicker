@@ -7,7 +7,6 @@ import "package:mysql1/mysql1.dart";
 class ConnectionUser {
   Future<bool> register(Usuario usuario) async {
     //Primero de todo establecemos la conexion
-
     final conexion = await MySqlConnection.connect(ConnectionSettings(
         host: "10.0.2.2", port: 3307, user: "root", db: "nelson"));
 
