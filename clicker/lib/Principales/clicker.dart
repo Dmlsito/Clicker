@@ -2,13 +2,14 @@
 
 import 'package:clicker/Complementos/NivelesDeMejoras.dart';
 import 'package:clicker/Complementos/snackBars.dart';
+import 'package:clicker/RecuperacionDatos/comprobaciones.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../Constructores/Usuario.dart';
 import "package:clicker/main.dart";
-
+import 'package:async/async.dart';
 import '../Constructores/monstruo.dart';
 import 'dart:math';
 import 'dart:async';
@@ -119,7 +120,7 @@ Timer? timer2;
 Timer? timer1;
 Timer? timer3;
 Timer? timer4;
-Timer? timer5;
+Timer?  timerAtaqueMonstruo;
 // Variables para dps
 double danoDps1 = 5;
 
@@ -304,7 +305,6 @@ double vidaMax10 = (vida * 0.1);
 
 //Variables para ir controlando la vida del jugador
 double vidaJugador = 1000;
-
 double retornadorDeValorVida = 1;
 
 double vidaMax = vidaJugador;
@@ -321,6 +321,7 @@ double vidaJugador10 = (vidaJugador * 0.1);
 //Boleanos para controlar los turnos de ataque de cada parte
 bool turnoJugador = true;
 bool turnoMonstruo = false;
+int duracionTurnoAtaqueMonstruo = 0;
 
 //Ataque del monstruo (provisional)
 double golpeMonstruo = 100;
@@ -337,6 +338,9 @@ String mensajeMaximaMejora = "Nivel Máximo de Mejora Alcanzado";
 final player = AudioPlayer();
 final player2 = AudioPlayer();
 
+//Variable para controlar el numero de monstruo de cada mundo, 
+int numeroMonstruo = 0;
+
 // Variables para ancho y alto de pantalla para ventana emergente
 var anchoPantalla, alturaPantalla, size;
 
@@ -346,8 +350,6 @@ NivelesDeMejoras incrementoMejoras = NivelesDeMejoras();
 //Instancia de la clase SnackBars
 
 SnackBars snackBars = new SnackBars();
-Timer? timerTurno;
-int tiempoDuracionTurnoMonstruo = 5;
 
 class StatesApp extends StatefulWidget {
   @override
@@ -362,6 +364,7 @@ class StatesAppState extends State<StatesApp> {
       alturaPantalla = size.height;
       anchoPantalla = size.width;
     });
+<<<<<<< HEAD
     //Funcion de ataque del monstruo
     void ataque() {
       setState(() {
@@ -395,10 +398,13 @@ class StatesAppState extends State<StatesApp> {
         turnoJugador = true;
       }
     }
+=======
+>>>>>>> 175e0d359b9cb3d14c48ef86cc1a5ba2c4ccf8f8
 
+   
     //Fucion vidaResta
     void vidaResta() {
-      if (turnoJugador == true) {
+      
         //Cuando ya se haya gastado el turno del jugador seteamos al false y setemaos el turno del monstruo a true
         turnoJugador = false;
         turnoMonstruo = true;
@@ -416,9 +422,10 @@ class StatesAppState extends State<StatesApp> {
             player.play(AssetSource("SonidoMuerteMonstruo.mp3"));
 
             contador++;
+            numeroMonstruo = contador;
             // Cambiamos de monstruo en función al contador por lo que asignamos a las variables su vida y su ruta de imagen
-            vida = listaMonstruos[contador].vida;
-            rutaMonstruo = listaMonstruos[contador].imagenRuta;
+            vida = listaMonstruos[numeroMonstruo].vida;
+            rutaMonstruo = listaMonstruos[numeroMonstruo].imagenRuta;
             // Actualizo las variables para barra de vida
             vidaMax90 = (vida * 0.9);
             vidaMax80 = (vida * 0.8);
@@ -444,7 +451,7 @@ class StatesAppState extends State<StatesApp> {
           }
         });
       }
-    }
+    
 
     //Funcion para la musica
     void playFile(String url) {
@@ -1088,46 +1095,7 @@ class StatesAppState extends State<StatesApp> {
           : golpeGlobal = golpeSencillo;
     }
 
-    //Funcion para barra de vida del jugador
-
-    double barraDeVidaJugador(retornadorDeValorDeVida) {
-      setState(() {
-        if (vidaJugador <= vidaMax && vidaJugador > vidaJugador90) {
-          retornadorDeValorVida = retornadorDeValorVida;
-        }
-        if (vidaJugador <= vidaJugador90 && vidaJugador > vidaJugador80) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.1;
-        }
-        if (vidaJugador <= vidaJugador80 && vidaJugador > vidaJugador70) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.2;
-        }
-        if (vidaJugador <= vidaJugador70 && vidaJugador > vidaJugador60) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.3;
-        }
-        if (vidaJugador <= vidaJugador60 && vidaJugador > vidaJugador50) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.4;
-        }
-        if (vidaJugador <= vidaJugador50 && vidaJugador > vidaJugador40) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.5;
-        }
-        if (vidaJugador <= vidaJugador40 && vidaJugador > vidaJugador30) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.6;
-        }
-        if (vidaJugador <= vidaJugador30 && vidaJugador > vidaJugador20) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.7;
-        }
-        if (vidaJugador <= vidaJugador20 && vidaJugador > vidaJugador10) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.8;
-        }
-        if (vidaJugador <= vidaJugador10 && vidaJugador > 0) {
-          retornadorDeValorVida = retornadorDeValorVida - 0.9;
-        }
-        if (vidaJugador == 0) {
-          retornadorDeValorVida = 0;
-        }
-      });
-      return retornadorDeValorVida;
-    }
+    
 
     //Funcion para barra de vida mosntruo
     double controladorBarra(v) {
@@ -1163,7 +1131,7 @@ class StatesAppState extends State<StatesApp> {
           v = v - 0.9;
         }
         if (vida == 0) {
-          v = 0;
+          v = 0.0;
         }
       });
 
@@ -1203,15 +1171,25 @@ class StatesAppState extends State<StatesApp> {
                                       child: Column(children: [
                                         Container(
                                           child: Center(
+                                            
                                               child: Container(
+                                                child: Row(
+                                                  children: [
+                                                     Container(
+                                                      child: IconButton(onPressed: (() {
+                                                        Comprobaciones comprobacion = new Comprobaciones();
+                                                        comprobacion.ingresarDatosJugador(indexImagen,numeroMonstruo, monedasJugador, bombas);
+                          
+                                                      }), 
+                                                      icon: Icon(Icons.abc)),
                                                   margin: EdgeInsets.only(
-                                                      top: 60, bottom: 10),
-                                                  child: Text(
+                                                      top: 60, bottom: 10)),
+                                                   Text(
                                                     "Música",
                                                     style: TextStyle(
                                                         color: Colors.white),
-                                                  ))),
-                                        ),
+                                                  )])),
+                                        )),
                                         Container(
                                             child: Row(
                                           children: [
@@ -1270,10 +1248,6 @@ class StatesAppState extends State<StatesApp> {
                                 });
                           },
                         )),
-                    //Container de prueba
-                    Container(
-                        child: Text(tiempoDuracionTurnoMonstruo.toString(),
-                            style: TextStyle(color: Colors.white))),
 
                     Container(
                       margin: EdgeInsets.only(
@@ -1311,20 +1285,7 @@ class StatesAppState extends State<StatesApp> {
                       ]),
                     ),
 
-                    //Container con la barra de vida del jugador
-                    Container(
-                        margin: EdgeInsets.only(
-                          top: alturaPantalla * 0.15,
-                        ),
-                        width: anchoPantalla,
-                        height: 10,
-                        child: LinearProgressIndicator(
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(ColorValue),
-                            backgroundColor: Colors.redAccent,
-                            value: barraDeVidaJugador(retornadorDeValorVida)
-                            //Llamamos a la funcion que retorne
-                            )),
+                    
 
                     //Container with monster´s image
                     Container(
@@ -1334,9 +1295,9 @@ class StatesAppState extends State<StatesApp> {
                       child: Column(children: [
                         InkWell(
                           onTap: () {
+                           
                             critico();
                             vidaResta();
-                            ataqueMonstruo();
                             setState(() {
                               // playFile("assets/Theme.mp3");
                             });
@@ -3534,3 +3495,93 @@ class StatesAppState extends State<StatesApp> {
             )));
   }
 }
+
+
+
+
+/*Funciones adicionales de ataque del monstruo
+ //Funcion para controlar el ataque del monstruo
+    void ataqueMonstruo() {
+      
+        timerAtaqueMonstruo = Timer.periodic(Duration(seconds: 1), (timer) {
+          if(turnoMonstruo == true){
+        duracionTurnoAtaqueMonstruo ++;
+        }
+        print("seconds: " + duracionTurnoAtaqueMonstruo.toString());
+        //A los cinco segundos el monstruo atacara
+
+        if(duracionTurnoAtaqueMonstruo == 5){ //Cuando se haya realizado el ataque del monstruo se seteara a false su turno y el turno del jugador se volvera a activar
+
+            setState(() {
+              //El monstruo realiza el ataque
+              vidaJugador = vidaJugador - golpeMonstruo;
+              
+            });
+            duracionTurnoAtaqueMonstruo = 0;
+               turnoMonstruo = false;
+               turnoJugador = true;
+            timerAtaqueMonstruo?.cancel();
+        }
+});
+        
+      
+      
+    }
+
+
+    //Funcion para barra de vida del jugador
+
+    double barraDeVidaJugador(retornadorDeValorDeVida) {
+      setState(() {
+        if (vidaJugador <= vidaMax && vidaJugador > vidaJugador90) {
+          retornadorDeValorVida = retornadorDeValorVida;
+        }
+        if (vidaJugador <= vidaJugador90 && vidaJugador > vidaJugador80) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.1;
+        }
+        if (vidaJugador <= vidaJugador80 && vidaJugador > vidaJugador70) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.2;
+        }
+        if (vidaJugador <= vidaJugador70 && vidaJugador > vidaJugador60) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.3;
+        }
+        if (vidaJugador <= vidaJugador60 && vidaJugador > vidaJugador50) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.4;
+        }
+        if (vidaJugador <= vidaJugador50 && vidaJugador > vidaJugador40) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.5;
+        }
+        if (vidaJugador <= vidaJugador40 && vidaJugador > vidaJugador30) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.6;
+        }
+        if (vidaJugador <= vidaJugador30 && vidaJugador > vidaJugador20) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.7;
+        }
+        if (vidaJugador <= vidaJugador20 && vidaJugador > vidaJugador10) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.8;
+        }
+        if (vidaJugador <= vidaJugador10 && vidaJugador > 0) {
+          retornadorDeValorVida = retornadorDeValorVida - 0.9;
+        }
+        if (vidaJugador == 0) {
+          retornadorDeValorVida = 0;
+        }
+      });
+      return retornadorDeValorVida;
+    }
+
+    //Container con la barra de vida del jugador
+                    Container(
+                        margin: EdgeInsets.only(
+                          top: alturaPantalla * 0.15,
+                        ),
+                        width: anchoPantalla,
+                        height: 10,
+                        child: LinearProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(ColorValue),
+                            backgroundColor: Colors.redAccent,
+                            value: barraDeVidaJugador(retornadorDeValorVida)
+                            //Llamamos a la funcion que retorne
+                            )),
+    */
