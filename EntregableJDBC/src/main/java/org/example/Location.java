@@ -7,25 +7,26 @@ import java.util.ArrayList;
 @XmlRootElement(name = "Location")
 public class Location {
 
-    private ArrayList<CountryRegion> listadoRegiones;
+    private ArrayList<CountryRegion> listadoPaises;
 
-    public Location(){}
+
 
 
 
     //Getters
 
-    public ArrayList<CountryRegion> getListadoRegiones(){
-        return this.listadoRegiones;
+    public ArrayList<CountryRegion> getListadoPaises(){
+        return this.listadoPaises;
     }
 
     @XmlElement(name = "CountryRegion")
-    public void setListadoRegiones(ArrayList<CountryRegion> listadoRegiones){
-        this.listadoRegiones = listadoRegiones;
+    public void setListadoPaises(ArrayList<CountryRegion> listadoPaises){
+        this.listadoPaises = listadoPaises;
     }
 
     @Override
     public String toString() {
-        return "" + listadoRegiones;
+        return "" + listadoPaises;
     }
+
 }

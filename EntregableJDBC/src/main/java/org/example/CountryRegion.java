@@ -10,8 +10,6 @@ public class CountryRegion {
 
     public CountryRegion(){}
 
-
-
     @XmlElement(name = "State")
     public void setListadoEstados(ArrayList<State> listadoEstados){
         this.listadoEstados = listadoEstados;
@@ -20,8 +18,6 @@ public class CountryRegion {
     public ArrayList<State> getListadoEstados(){
         return this.listadoEstados;
     }
-
-
     @Override
     public String toString() {
         return "" +
