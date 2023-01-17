@@ -47,10 +47,10 @@ public class Main
         Connection c = Conexion.getConnection();
         PreparedStatement p = null;
         try{
-            String sql = "INSERT INTO (codigo, nombre) Value(?,?)";
+            String sql = "INSERT INTO Ciudades (codigo, nombre) VALUES(?,?)";
             p = c.prepareStatement(sql);
-            p.setString(1, nombre);
-            p.setString(2, code);
+            p.setString(1, code);
+            p.setString(2, nombre);
             p.executeUpdate();
             System.out.println("La operacion salio con exito");
         }catch(SQLException e){
