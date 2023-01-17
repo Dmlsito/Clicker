@@ -13,7 +13,7 @@ class ConnectionUser {
     bool comprobar = false;
     //Query para insertar los datos del jugador
     var result = await conexion.query(
-        "insert into usuario (nombre, contraseña) value (?, ?)",
+        "insert into usuarios (nombre, password) value (?, ?)",
         [usuario.nombre, usuario.contrasena]);
 
     //Como ya se ha realizado la operacion se setea el booleano a true y se cierra la conexion
@@ -32,9 +32,9 @@ class ConnectionUser {
         host: "10.0.2.2", port: 3307, user: "root", db: "nelson"));
 
     //Consulta SQL
-    String sql = "select * from usuario where nombre = '" +
+    String sql = "select * from usuarios where nombre = '" +
         nombre +
-        "' and contraseña = '" +
+        "' and password = '" +
         contrasena +
         "'";
 
