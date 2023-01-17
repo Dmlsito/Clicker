@@ -1,8 +1,7 @@
-import 'package:clicker/Principales/MainPage.dart';
-
+import 'package:clicker/Principales/login.dart';
 import 'package:flutter/material.dart';
 import 'Principales/clicker.dart';
-import 'Principales/login.dart';
+import 'Principales/register.dart';
 
 void main() {
   runApp(const MyApp());

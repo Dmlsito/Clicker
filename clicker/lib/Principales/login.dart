@@ -1,15 +1,13 @@
-// ignore_for_file: prefer_const_constructors, unused_import, unnecessary_new, unnecessary_cast, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, unnecessary_new, unnecessary_cast, use_build_context_synchronously, unused_local_variable, use_key_in_widget_constructors
 
-import 'package:audioplayers/audioplayers.dart';
-import 'package:clicker/Principales/MainPage.dart';
+import 'package:clicker/Complementos/snackBars.dart';
+import 'package:clicker/Principales/clicker.dart';
 import 'package:flutter/material.dart';
-import '../Complementos/snackBars.dart';
 import '../ConexionBBDD/conexion.dart';
-import 'clicker.dart';
-import "package:clicker/main.dart";
 import '../Constructores/Usuario.dart';
+import 'package:audioplayers/audioplayers.dart';
 
-class Register extends StatelessWidget {
+class MainPage extends StatelessWidget {
   @override
   Widget build(Object context) {
     return Scaffold(
@@ -18,6 +16,7 @@ class Register extends StatelessWidget {
   }
 }
 
+//Objeto player para la musica
 final player = AudioPlayer();
 
 void playFile(String url) {
@@ -26,10 +25,10 @@ void playFile(String url) {
 
 class StatesApp extends StatefulWidget {
   @override
-  clase2 createState() => clase2();
+  clase1 createState() => clase1();
 }
 
-class clase2 extends State<StatesApp> {
+class clase1 extends State<StatesApp> {
   String nombre = '';
   String contrasena = "";
 
@@ -41,8 +40,9 @@ class clase2 extends State<StatesApp> {
       home: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("assets/Register.gif"), fit: BoxFit.cover)),
+                  image: AssetImage("assets/posible3.gif"), fit: BoxFit.cover)),
           child: Scaffold(
+              // Esto es para que el gif de fondo se vea y no este tapado por este background
               backgroundColor: Colors.transparent,
               body: Center(
                 child: Form(
@@ -50,12 +50,19 @@ class clase2 extends State<StatesApp> {
                     child: Column(
                       children: [
                         Container(
+                          margin: EdgeInsets.only(top: 50),
+                          child: Text("NelsonEsMiPadre.exe",
+                              style: TextStyle(
+                                fontSize: 33,
+                                fontFamily: "caps",
+                              )),
+                        ),
+                        Container(
                           height: 50,
-                          margin:
-                              EdgeInsets.only(top: 250, left: 80, right: 80),
+                          margin: EdgeInsets.only(top: 50, left: 80, right: 80),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                          ),
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(10)),
                           child: TextFormField(
                             decoration: InputDecoration(
                               labelText: "Nombre",
@@ -74,8 +81,8 @@ class clase2 extends State<StatesApp> {
                           height: 50,
                           margin: EdgeInsets.only(top: 20, left: 80, right: 80),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                          ),
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(10)),
                           child: TextFormField(
                             obscureText: true,
                             decoration:
@@ -90,14 +97,34 @@ class clase2 extends State<StatesApp> {
                             },
                           ),
                         ),
-                        OutlinedButton(
-                            onPressed: () {
-                              register(context);
-                            },
-                            child:
-                                Text("Login", style: TextStyle(fontSize: 20))),
                         Container(
-                          margin: EdgeInsets.only(top: 195, left: 140),
+                            margin: EdgeInsets.only(top: 20),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border:
+                                    Border.all(width: 2, color: Colors.grey)),
+                            child: OutlinedButton(
+                                onPressed: () {
+                                  login(context);
+                                },
+                                child: Text("Login",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.grey)))),
+                        Container(
+                            margin: EdgeInsets.only(top: 10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border:
+                                    Border.all(width: 2, color: Colors.grey)),
+                            child: OutlinedButton(
+                                onPressed: () {
+                                  register(context);
+                                },
+                                child: Text("Register",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.grey)))),
+                        Container(
+                          margin: EdgeInsets.only(top: 200, left: 150),
                           decoration: BoxDecoration(),
                           child: Row(
                             children: [
@@ -140,28 +167,28 @@ class clase2 extends State<StatesApp> {
     );
   }
 
-  register(BuildContext context) async {
+  login(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
 
       //Llamamos a la BBDD
-    Usuario usuario = new Usuario(nombre: nombre, contrasena: contrasena);
-    //Creamos un objeto conexion
-    ConnectionUser conexion = new ConnectionUser();
 
-    bool registro = await conexion.register(usuario) as bool;
-    
-    //Si devuelve un true quiere decir que la operacion se ha realizado con exito
-    if(registro){
-      Navigator.of(context).pushNamed("/Login",
-          arguments: Usuario(nombre: nombre, contrasena: contrasena));
-    }else{
-      //Esto es provisional
-     SnackBars snackBar = new SnackBars();
-     snackBar.FalloInsertUsuario(context);
-    }
-    }
-  
+      //Creamos un objeto conexion
+      ConnectionUser conexion = new ConnectionUser();
+
+      bool existe = await conexion.login(nombre, contrasena);
+
+      if (existe) {
+        //Si el nombre no esta vacio querra decir que el usuario si que existe, por lo tanto pusheamos a la pagina principal
+        Navigator.of(context).pushNamed("/Clicker");
+      } else {
+        SnackBars snackBar = new SnackBars();
+        snackBar.usuarioNoEncontrado(context);
+      }
     }
   }
 
+  register(BuildContext context) {
+    Navigator.of(context).pushNamed("/Register");
+  }
+}
