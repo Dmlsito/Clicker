@@ -28,43 +28,49 @@ class Comprobaciones {
     return finalizado;
   }
 
+  //Retornar DatosJugador
   Future<Usuario> retornarIdUsuario(String nombre) async {
     final conexion = await MySqlConnection.connect(ConnectionSettings(
         host: "10.0.2.2", port: 3307, user: "root", db: "nelson"));
 
     Usuario usuario = new Usuario(id: 0, nombre: "", contrasena: "");
 
-    String sql = "SELECT Id FROM Usuarios WHERE Nombre = '" + nombre + "'";
+    String sql = "select id, nombre, password from usuarios where nombre ='" +
+        nombre.toString() +
+        "'";
 
     var resultQuery = await conexion.query(sql);
 
     if (resultQuery.isNotEmpty) {
       ResultRow row = resultQuery.first;
 
-      usuario = Usuario(id: row[0], nombre: "", contrasena: "");
-      return usuario;
+      usuario = Usuario(id: row[0], nombre: row[1], contrasena: row[2]);
     }
+
+    await conexion.close();
 
     return usuario;
   }
 
+  //Retorna los datos de la partida del jugador
   Future<Jugador> retornarDatos(Usuario usuario) async {
     final conexion = await MySqlConnection.connect(ConnectionSettings(
         host: "10.0.2.2", port: 3307, user: "root", db: "nelson"));
 
+    Usuario usuarioPrueba = Usuario(id: 0, nombre: "", contrasena: "");
     //Creamos objeto jugador vacio
     Jugador jugador =
         new Jugador(idJugador: 0, monedas: 0, monstruo: 0, mundo: 0);
     //Variable en la que guardaremos el id de cada usuario
-    int id;
+    int idUsuario;
     //Retornamos el usuario
-    Usuario usuarioPrueba = retornarIdUsuario(usuario.getNombre()) as Usuario;
+    usuarioPrueba = retornarIdUsuario(usuario.getNombre()) as Usuario;
     //A esta variable, que correspondera al id del usuario que se ha logeado, se le asignara el id del usuario
-    id = usuarioPrueba.id;
+    idUsuario = usuarioPrueba.id;
     //Ahora  tenemos un usuario con solo el id
     String sql =
         "SELECT jugador.Id_Usuario, jugador.Monedas, jugador.Monstruo, jugador.Mundo  FROM Jugador WHERE jugador.Id_Usuario = '" +
-            id.toString() +
+            idUsuario.toString() +
             "'";
 
     //Realizamos la consulta

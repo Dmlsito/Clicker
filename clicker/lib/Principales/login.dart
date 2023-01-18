@@ -180,24 +180,15 @@ class clase1 extends State<StatesApp> {
       bool existe = await conexion.login(nombre, contrasena);
 
       if (existe) {
-        //Si el nombre no esta vacio querra decir que el usuario si que existe, por lo tanto pusheamos a la pagina principal
-
-        //Empieza el retorno de datos
-        //Este usuario se lo creamos para que copie los datos de lo que ha introducido en el login y se los asigne a este objeto
-        /*que nos servira de comparador
         Usuario usuarioComparacion =
             new Usuario(id: 0, nombre: nombre, contrasena: contrasena);
 
         Comprobaciones retorno = new Comprobaciones();
 
-        Usuario usuario1 = retorno.retornarIdUsuario(nombre) as Usuario;
-
+        usuarioComparacion = await retorno
+            .retornarIdUsuario(usuarioComparacion.nombre) as Usuario;
         //Jugador jugador = retorno.retornarDatos(usuarioComparacion) as Jugador;
-        */
-
-        Navigator.of(context).pushNamed(
-          "/Clicker",
-        );
+        Navigator.of(context).pushNamed("/Clicker");
       } else {
         SnackBars snackBar = new SnackBars();
         snackBar.usuarioNoEncontrado(context);

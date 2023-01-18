@@ -46,14 +46,13 @@ class ConnectionUser {
     if (comprobarUsuario.isNotEmpty) {
       ResultRow row = comprobarUsuario.first;
       usuarioComprobacion = new Usuario(
-        id: 0,
+        id: row[0],
         nombre: row[1],
         contrasena: row[2],
       );
-      await conexion.close();
+
       return true;
     }
-    await conexion.close();
     return false;
   }
 }
