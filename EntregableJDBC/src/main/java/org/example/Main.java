@@ -5,10 +5,18 @@ import com.sun.xml.internal.ws.addressing.WsaActionUtil;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
+<<<<<<< HEAD
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+=======
+import java.sql.*;
+
+
+
+
+>>>>>>> ee19fc0222387d6cdd9881273d62ba02bf7db4bb
 public class Main
 {
     public static void main( String[] args ) throws SQLException {
@@ -41,7 +49,7 @@ public class Main
 
     //Metodo para insertar datos
     public static void executeUpdate(String nombre, String code) throws SQLException{
-        Connection c = Conexion.getConnection();
+        Connection c = Conexion.obtenerConexion();
         PreparedStatement p = null;
         try{
             String sql = "INSERT INTO Ciudades (codigo, nombre) VALUES(?,?)";

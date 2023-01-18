@@ -25,7 +25,7 @@ class ConnectionUser {
 
   Future<bool> login(String nombre, String contrasena) async {
     //A este usuario le daremos los valores que nos devolvera el SELECT para poder devolverlo y poder comprobar si esta vacio o no
-    Usuario usuarioComprobacion = Usuario(nombre: "", contrasena: "");
+    Usuario usuarioComprobacion = Usuario(id: 0, nombre: "", contrasena: "");
 
     //Establecemos la conexion
     final conexion = await MySqlConnection.connect(ConnectionSettings(
@@ -44,8 +44,8 @@ class ConnectionUser {
     //Comprobamos que el usuario no esta vacio, si no lo esta al usuario le damos los valores que hemos guardado
     //en filas con ResultRow
     if (comprobarUsuario.isNotEmpty) {
-      //  ResultRow row = comprobarUsuario.first;
-      //  usuarioComprobacion = new Usuario(nombre: row[0], contrasena: row[1]);
+        ResultRow row = comprobarUsuario.first;
+       usuarioComprobacion = new Usuario( id: 0, nombre: row[1], contrasena: row[2], );
       return true;
     }
     return false;

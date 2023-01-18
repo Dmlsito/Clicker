@@ -2,6 +2,7 @@ package org.example;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -14,8 +15,8 @@ public class Conexion {
     static{
         config.setJdbcUrl("jdbc:sqlserver://localhost:1433");
         config.setUsername("sa");
-        config.setPassword("instiagra");
-        config.addDataSourceProperty("database", "Pruebas");
+        config.setPassword("admin");
+        config.addDataSourceProperty("database", "Prueba");
         config.addDataSourceProperty("encrypt", "true");
         config.addDataSourceProperty("trustServerCertificate", "true");
         config.addDataSourceProperty("loginTimeout", "30");
@@ -23,7 +24,7 @@ public class Conexion {
 
     }
 
-    public static Connection getConnection() throws SQLException {
+    public static Connection obtenerConexion() throws SQLException {
         return ds.getConnection();
     }
 }

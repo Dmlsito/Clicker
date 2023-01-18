@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new, unnecessary_cast, use_build_context_synchronously, unused_local_variable, use_key_in_widget_constructors
 
 import 'package:clicker/Complementos/snackBars.dart';
+import 'package:clicker/Constructores/jugador.dart';
 import 'package:clicker/Principales/clicker.dart';
+import 'package:clicker/RecuperacionDatos/comprobaciones.dart';
 import 'package:flutter/material.dart';
 import '../ConexionBBDD/conexion.dart';
 import '../Constructores/Usuario.dart';
@@ -180,6 +182,16 @@ class clase1 extends State<StatesApp> {
 
       if (existe) {
         //Si el nombre no esta vacio querra decir que el usuario si que existe, por lo tanto pusheamos a la pagina principal
+
+        //Empieza el retorno de datos
+
+        Usuario usuarioPrueba = new Usuario(id:0, nombre: nombre, contrasena: contrasena);
+
+        Comprobaciones retorno = new Comprobaciones();
+         
+        Jugador jugador = retorno.retornarDatos(usuarioPrueba) as Jugador;
+
+
         Navigator.of(context).pushNamed("/Clicker");
       } else {
         SnackBars snackBar = new SnackBars();
