@@ -44,10 +44,10 @@ public class Main
         Connection c = Conexion.obtenerConexion();
         PreparedStatement p = null;
         try{
-            String sql = "INSERT INTO (codigo, nombre) Value(?,?)";
+            String sql = "INSERT INTO Ciudades (codigo, nombre) VALUES(?,?)";
             p = c.prepareStatement(sql);
-            p.setString(1, nombre);
-            p.setString(2, code);
+            p.setString(1, code);
+            p.setString(2, nombre);
             p.executeUpdate();
             System.out.println("La operacion salio con exito");
         }catch(SQLException e){
@@ -92,5 +92,40 @@ public class Main
     }
 
     //Metodo para insertar datos con executeBatch()
-    public static void insertarDatosBatch(){}
+    public static void insertarDatosBatch(Location location) throws SQLException {
+
+        Connection c = Conexion.getConnection();
+        PreparedStatement p = null;
+        long inicio =   System.currentTimeMillis();
+        try{
+            String sql = "INSERT INTO Ciudades (codigo, nombre) Values(?,?)";
+            p = c.prepareStatement(sql);
+            for(CountryRegion country: location.getListadoPaises()){
+                CountryRegion pais = country;
+                //Comprobamos si ese pais tiene estados
+                if(pais.getListadoEstados() != null){
+                    for(State state: pais.getListadoEstados()){
+                        State estado = state;
+                        if(state.getListadoCiudades() != null){
+                            for(CiudadesJAXB ciudad: estado.getListadoCiudades()){
+                                p.setString(1, ciudad.getCode());
+                                p.setString(2, ciudad.getNombre());
+                                p.executeBatch();
+                            }
+                        }
+                    }
+                }
+            }
+          p.addBatch();
+            
+        }catch(SQLException e){
+            System.out.println("Ha ocurrido un problema al ejecutar el batch");
+            throw new RuntimeException(e);
+        }finally{
+            if(c != null) c.close();
+            if(p != null) p.close();
+        }
+
+
+    }
 }
