@@ -46,9 +46,7 @@ class Comprobaciones {
 
       usuario = Usuario(id: row[0], nombre: row[1], contrasena: row[2]);
     }
-
     await conexion.close();
-
     return usuario;
   }
 
