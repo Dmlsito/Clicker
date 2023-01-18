@@ -1143,7 +1143,7 @@ class StatesAppState extends State<StatesApp> {
                                                               indexImagen,
                                                               numeroMonstruo,
                                                               monedasJugador,
-                                                              bombas);
+                                                              );
                                                     }),
                                                     icon: Icon(Icons.abc)),
                                                 margin: EdgeInsets.only(
