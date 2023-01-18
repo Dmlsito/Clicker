@@ -20,6 +20,8 @@ class MainPage extends StatelessWidget {
 
 //Objeto player para la musica
 final player = AudioPlayer();
+String nombre = '';
+String contrasena = "";
 
 void playFile(String url) {
   player.play(AssetSource(url));
@@ -31,9 +33,6 @@ class StatesApp extends StatefulWidget {
 }
 
 class clase1 extends State<StatesApp> {
-  String nombre = '';
-  String contrasena = "";
-
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -184,15 +183,21 @@ class clase1 extends State<StatesApp> {
         //Si el nombre no esta vacio querra decir que el usuario si que existe, por lo tanto pusheamos a la pagina principal
 
         //Empieza el retorno de datos
-
-        Usuario usuarioPrueba = new Usuario(id:0, nombre: nombre, contrasena: contrasena);
+        //Este usuario se lo creamos para que copie los datos de lo que ha introducido en el login y se los asigne a este objeto
+        /*que nos servira de comparador
+        Usuario usuarioComparacion =
+            new Usuario(id: 0, nombre: nombre, contrasena: contrasena);
 
         Comprobaciones retorno = new Comprobaciones();
-         
-        Jugador jugador = retorno.retornarDatos(usuarioPrueba) as Jugador;
 
+        Usuario usuario1 = retorno.retornarIdUsuario(nombre) as Usuario;
 
-        Navigator.of(context).pushNamed("/Clicker");
+        //Jugador jugador = retorno.retornarDatos(usuarioComparacion) as Jugador;
+        */
+
+        Navigator.of(context).pushNamed(
+          "/Clicker",
+        );
       } else {
         SnackBars snackBar = new SnackBars();
         snackBar.usuarioNoEncontrado(context);

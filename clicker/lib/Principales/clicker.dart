@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import '../Constructores/Usuario.dart';
 import "package:clicker/main.dart";
 import 'package:async/async.dart';
+import '../Constructores/jugador.dart';
 import '../Constructores/monstruo.dart';
 import 'dart:math';
 import 'dart:async';
@@ -359,6 +360,8 @@ class StatesApp extends StatefulWidget {
 class StatesAppState extends State<StatesApp> {
   @override
   Widget build(BuildContext context) {
+    //final datosJugador = ModalRoute.of(context)!.settings.arguments as Jugador;
+
     setState(() {
       size = MediaQuery.of(context).size;
       alturaPantalla = size.height;
@@ -367,11 +370,11 @@ class StatesAppState extends State<StatesApp> {
 
     //Fucion vidaResta
     void vidaResta() {
-      //Cuando ya se haya gastado el turno del jugador seteamos al false y setemaos el turno del monstruo a true
+      /*Cuando ya se haya gastado el turno del jugador seteamos al false y setemaos el turno del monstruo a true
       turnoJugador = false;
       turnoMonstruo = true;
+*/
 
-      print(turnoJugador);
       // Resto uno de vida y sumo 5 monedas
       setState(() {
         temporizadorDeCritico++;
@@ -1140,10 +1143,10 @@ class StatesAppState extends State<StatesApp> {
                                                           new Comprobaciones();
                                                       comprobacion
                                                           .ingresarDatosJugador(
-                                                              indexImagen,
-                                                              numeroMonstruo,
-                                                              monedasJugador,
-                                                              );
+                                                        indexImagen,
+                                                        numeroMonstruo,
+                                                        monedasJugador,
+                                                      );
                                                     }),
                                                     icon: Icon(Icons.abc)),
                                                 margin: EdgeInsets.only(

@@ -145,7 +145,8 @@ class clase2 extends State<StatesApp> {
       formKey.currentState!.save();
 
       //Llamamos a la BBDD
-      Usuario usuario = new Usuario(nombre: nombre, contrasena: contrasena);
+      Usuario usuario =
+          new Usuario(id: 0, nombre: nombre, contrasena: contrasena);
       //Creamos un objeto conexion
       ConnectionUser conexion = new ConnectionUser();
 
@@ -154,7 +155,7 @@ class clase2 extends State<StatesApp> {
       //Si devuelve un true quiere decir que la operacion se ha realizado con exito
       if (registro) {
         Navigator.of(context).pushNamed("/Login",
-            arguments: Usuario(nombre: nombre, contrasena: contrasena));
+            arguments: Usuario(id: 0, nombre: nombre, contrasena: contrasena));
       } else {
         //Esto es provisional
         SnackBars snackBar = new SnackBars();

@@ -32,9 +32,9 @@ class ConnectionUser {
         host: "10.0.2.2", port: 3307, user: "root", db: "nelson"));
 
     //Consulta SQL
-    String sql = "select * from usuarios where nombre = '" +
+    String sql = "select * from usuarios where Nombre = '" +
         nombre +
-        "' and password = '" +
+        "' and Password = '" +
         contrasena +
         "'";
 
@@ -44,10 +44,16 @@ class ConnectionUser {
     //Comprobamos que el usuario no esta vacio, si no lo esta al usuario le damos los valores que hemos guardado
     //en filas con ResultRow
     if (comprobarUsuario.isNotEmpty) {
-        ResultRow row = comprobarUsuario.first;
-       usuarioComprobacion = new Usuario( id: 0, nombre: row[1], contrasena: row[2], );
+      ResultRow row = comprobarUsuario.first;
+      usuarioComprobacion = new Usuario(
+        id: 0,
+        nombre: row[1],
+        contrasena: row[2],
+      );
+      await conexion.close();
       return true;
     }
+    await conexion.close();
     return false;
   }
 }
