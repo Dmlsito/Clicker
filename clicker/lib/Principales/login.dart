@@ -185,9 +185,8 @@ class clase1 extends State<StatesApp> {
 
         Comprobaciones retorno = new Comprobaciones();
 
-        usuarioComparacion = await retorno
-            .retornarIdUsuario(usuarioComparacion.nombre) as Usuario;
-        //Jugador jugador = retorno.retornarDatos(usuarioComparacion) as Jugador;
+        Jugador jugador =
+            await retorno.retornarDatos(usuarioComparacion) as Jugador;
         Navigator.of(context).pushNamed("/Clicker");
       } else {
         SnackBars snackBar = new SnackBars();

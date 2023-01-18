@@ -64,7 +64,7 @@ class Comprobaciones {
     //Variable en la que guardaremos el id de cada usuario
     int idUsuario;
     //Retornamos el usuario
-    usuarioPrueba = retornarIdUsuario(usuario.getNombre()) as Usuario;
+    usuarioPrueba = await retornarIdUsuario(usuario.getNombre());
     //A esta variable, que correspondera al id del usuario que se ha logeado, se le asignara el id del usuario
     idUsuario = usuarioPrueba.id;
     //Ahora  tenemos un usuario con solo el id
