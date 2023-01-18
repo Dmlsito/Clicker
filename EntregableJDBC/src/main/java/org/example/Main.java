@@ -9,15 +9,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-
-
-
 public class Main
 {
     public static void main( String[] args ) throws SQLException {
         String path = "Ciudades.xml";
        insertarDatos(leerXML(path));
+       insertarDatosBatch(leerXML(path));
     }
 
     //Metodo para leer el XML
@@ -95,40 +92,38 @@ public class Main
     }
 
     //Metodo para insertar datos con executeBatch()
+    //NOTA IMPORTANTE -> Se han creado dos tablas, en la tabla "Ciudades" se usara para insertar todos los datos de las ciudades utilizando el metodo insertarDatos()
+    //De forma distinta en la tabla "Ciudades2" se usara para insertar todos los datos de las ciudades utilizando el metodo insertarDatosBatch()
     public static void insertarDatosBatch(Location location) throws SQLException {
 
         Connection c = Conexion.getConnection();
         PreparedStatement p = null;
         long inicio =   System.currentTimeMillis();
         try{
-            String sql = "INSERT INTO Ciudades (codigo, nombre) Values(?,?)";
+            String sql = "INSERT INTO Ciudades2 (codigo, nombre) Values(?,?)";
             p = c.prepareStatement(sql);
             for(CountryRegion country: location.getListadoPaises()){
                 CountryRegion pais = country;
-                //Comprobamos si ese pais tiene estados
+                //Comprobamos si cada pais tiene estados
                 if(pais.getListadoEstados() != null){
                     for(State state: pais.getListadoEstados()){
                         State estado = state;
+                        //Comprobamos si cada estado tiene ciudades
                         if(state.getListadoCiudades() != null){
                             for(CiudadesJAXB ciudad: estado.getListadoCiudades()){
                                 p.setString(1, ciudad.getCode());
                                 p.setString(2, ciudad.getNombre());
-                                p.executeBatch();
-                            }
-                        }
-                    }
-                }
-            }
-          p.addBatch();
-            
+                                //Cuando hayamos indicado los datos que se tienen que ingresar y en que campos se guarda en el batch, esto se repetira
+                                //hasta que se acaben las ciudades
+                                p.addBatch();
+                            }}}}}
+
+            p.executeBatch();
+
         }catch(SQLException e){
             System.out.println("Ha ocurrido un problema al ejecutar el batch");
             throw new RuntimeException(e);
         }finally{
             if(c != null) c.close();
             if(p != null) p.close();
-        }
-
-
-    }
-}
+        }}}
