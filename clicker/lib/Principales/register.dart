@@ -154,6 +154,7 @@ class clase2 extends State<StatesApp> {
 
       //Si devuelve un true quiere decir que la operacion se ha realizado con exito
       if (registro) {
+        snackBars.usuarioCreado(context);
         Navigator.of(context).pushNamed("/Login",
             arguments: Usuario(id: 0, nombre: nombre, contrasena: contrasena));
       } else {

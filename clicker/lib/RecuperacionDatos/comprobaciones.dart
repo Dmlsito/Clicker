@@ -142,7 +142,7 @@ class Comprobaciones {
 
     var result = await conexion.query(
         "INSERT INTO Jugador (Id_Usuario, Monstruo, Mundo, Monedas, Mejora1V1, Mejora1V2, Mejora1V3, Contador1) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-        [id, 0, 0, 0, false, false, false, 0]);
+        [id, 0, 0, 0, 0, 0, 0, 0]);
 
     await conexion.close();
     return true;

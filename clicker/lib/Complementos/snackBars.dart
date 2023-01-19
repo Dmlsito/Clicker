@@ -191,7 +191,7 @@ class SnackBars {
     ScaffoldMessenger.of(context).showSnackBar(snb);
   }
 
-  void FalloInsertUsuario(BuildContext context){
+  void FalloInsertUsuario(BuildContext context) {
     final snb = SnackBar(
       content: Row(
         children: [
@@ -206,9 +206,9 @@ class SnackBars {
     ScaffoldMessenger.of(context).showSnackBar(snb);
   }
 
-
-  void usuarioNoEncontrado(BuildContext context){
+  void usuarioNoEncontrado(BuildContext context) {
     final snb = SnackBar(
+      backgroundColor: Colors.red,
       content: Row(
         children: [
           Icon(Icons.thumb_up),
@@ -221,5 +221,20 @@ class SnackBars {
     );
     ScaffoldMessenger.of(context).showSnackBar(snb);
   }
-  }
 
+  void usuarioCreado(BuildContext context) {
+    final snb = SnackBar(
+      backgroundColor: Colors.green,
+      content: Row(
+        children: [
+          Icon(Icons.thumb_up),
+          SizedBox(
+            width: 20,
+          ),
+          Text("Usuario creado")
+        ],
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snb);
+  }
+}
