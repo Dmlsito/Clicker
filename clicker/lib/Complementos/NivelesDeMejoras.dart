@@ -7,22 +7,22 @@ class NivelesDeMejoras {
   Color verde = Color(0xff00FF00);
 
   //Funciones de mejora 1 para mostrar el estado de nivel por pantalla
-  Color incremento1Mejora1(bool mejora1V1) {
-    if (mejora1V1) {
+  Color incremento1Mejora1(int mejora1V1) {
+    if (mejora1V1 == 1) {
       return verde;
     }
     return transparent;
   }
 
-  Color incremento2Mejora1(bool mejora1V2) {
-    if (mejora1V2) {
+  Color incremento2Mejora1(int mejora1V2) {
+    if (mejora1V2 == 1) {
       return verde;
     }
     return transparent;
   }
 
-  Color incremento3Mejora1(bool mejora1V3) {
-    if (mejora1V3) {
+  Color incremento3Mejora1(int mejora1V3) {
+    if (mejora1V3 == 1) {
       return verde;
     }
     return transparent;

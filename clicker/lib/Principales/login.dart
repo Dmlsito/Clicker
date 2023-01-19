@@ -187,7 +187,37 @@ class clase1 extends State<StatesApp> {
 
         Jugador jugador =
             await retorno.retornarDatos(usuarioComparacion) as Jugador;
-        Navigator.of(context).pushNamed("/Clicker");
+
+        bool comprobacionExistencia =
+            await retorno.comprobacionPrimeraVez(jugador.id);
+        if (comprobacionExistencia) {
+          //Como es la primera vez insertamos en la tabla jugadores todos los campos a 0, es decir creamos un nuevo jugador
+          bool paLante = await retorno.ingresarJugador(jugador.id);
+          if (paLante) {
+            Navigator.of(context).pushNamed("/Clicker",
+                arguments: Jugador(
+                    id: jugador.id,
+                    monedas: 0,
+                    monstruo: 0,
+                    mundo: 0,
+                    mejora1V1: 0,
+                    mejora1V2: 0,
+                    mejora1V3: 0,
+                    contador1: 0));
+          }
+        } else {
+          //Como no es la primera vez le pasamos los datos que habiamos recogido previamente
+          Navigator.of(context).pushNamed("/Clicker",
+              arguments: Jugador(
+                  id: jugador.id,
+                  monedas: jugador.monedas,
+                  monstruo: jugador.monstruo,
+                  mundo: jugador.mundo,
+                  mejora1V1: jugador.mejora1V1,
+                  mejora1V2: jugador.mejora1V2,
+                  mejora1V3: jugador.mejora1V3,
+                  contador1: jugador.contador1));
+        }
       } else {
         SnackBars snackBar = new SnackBars();
         snackBar.usuarioNoEncontrado(context);

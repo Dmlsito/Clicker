@@ -28,24 +28,24 @@ class Principal extends StatelessWidget {
 List<monstruo> listaMonstruos = [
   monstruo(
       nombre: "Morgoth",
-      vida: 30000.00,
+      vida: 3000.00,
       imagenRuta: "assets/caballeroAnimado.gif",
       identificador: 1),
   monstruo(
     nombre: "Atreus",
-    vida: 60000.00,
+    vida: 6000.00,
     imagenRuta: "assets/caballeroBebiendo.gif",
     identificador: 2,
   ),
   monstruo(
     nombre: "Inivir",
-    vida: 80000.00,
+    vida: 8000.00,
     imagenRuta: "assets/caballeroAnimado2.gif",
     identificador: 3,
   ),
   monstruo(
     nombre: "Bailongo",
-    vida: 240000.00,
+    vida: 24000.00,
     imagenRuta: "assets/dinosaurioBailando.gif",
     identificador: 4,
   ),
@@ -106,7 +106,7 @@ List<String> listaMundos = [
 ];
 
 // Ruta de imagen inicial
-String rutaMonstruo = listaMonstruos[contador].imagenRuta;
+// String rutaMonstruo = listaMonstruos[contador].imagenRuta;
 // Index para identificarlo
 int indexImagen = 0;
 // Vida inicial
@@ -360,7 +360,9 @@ class StatesApp extends StatefulWidget {
 class StatesAppState extends State<StatesApp> {
   @override
   Widget build(BuildContext context) {
-    //final datosJugador = ModalRoute.of(context)!.settings.arguments as Jugador;
+    final datosJugador = ModalRoute.of(context)!.settings.arguments as Jugador;
+    // Ruta de imagen inicial
+    String rutaMonstruo = listaMonstruos[datosJugador.monstruo].imagenRuta;
 
     setState(() {
       size = MediaQuery.of(context).size;
@@ -377,20 +379,30 @@ class StatesAppState extends State<StatesApp> {
 
       // Resto uno de vida y sumo 5 monedas
       setState(() {
+        print("Las monedas son: " + monedasJugador.toString());
         temporizadorDeCritico++;
         vida = vida - golpeGlobal;
         // print("Vida: " + vida.toString());
-        monedasJugador = monedasJugador + monedasRecibidas;
+        datosJugador.monedas = datosJugador.monedas + monedasRecibidas;
+
+        //Este print es de prueba
+        print(
+            "Las monedas del jugador son: " + datosJugador.monedas.toString());
+        // monedasJugador = monedasJugador + monedasRecibidas;
         // print("Monedas: " + monedasJugador.toString());
         if (vida < 0) {
           //Cuando el monstruo muere sonara esto
           player.play(AssetSource("SonidoMuerteMonstruo.mp3"));
 
-          contador++;
-          numeroMonstruo = contador;
+          // contador++;
+          // numeroMonstruo = contador;
+          // datosJugador.monstruo = numeroMonstruo;
+          datosJugador.monstruo++;
+          contador = datosJugador.monstruo;
+          //datosJugador.monstruo = numeroMonstruo;
           // Cambiamos de monstruo en función al contador por lo que asignamos a las variables su vida y su ruta de imagen
-          vida = listaMonstruos[numeroMonstruo].vida;
-          rutaMonstruo = listaMonstruos[numeroMonstruo].imagenRuta;
+          vida = listaMonstruos[datosJugador.monstruo].vida;
+          rutaMonstruo = listaMonstruos[datosJugador.monstruo].imagenRuta;
           // Actualizo las variables para barra de vida
           vidaMax90 = (vida * 0.9);
           vidaMax80 = (vida * 0.8);
@@ -404,14 +416,14 @@ class StatesAppState extends State<StatesApp> {
           v = 1;
 
           //Controlamos que si ha matado mas de 3 mundos pero menos de 6 el mundo se actualizara
-          if (contador >= 3 && contador <= 6) {
-            indexImagen = 1;
+          if (datosJugador.monstruo >= 3 && datosJugador.monstruo <= 6) {
+            datosJugador.mundo = 1;
           }
-          if (contador >= 6 && contador <= 9) {
-            indexImagen = 2;
+          if (datosJugador.monstruo >= 6 && datosJugador.monstruo <= 9) {
+            datosJugador.mundo = 2;
           }
-          if (contador >= 9 && contador <= 13) {
-            indexImagen = 3;
+          if (datosJugador.monstruo >= 9 && datosJugador.monstruo <= 13) {
+            datosJugador.mundo = 3;
           }
         }
       });
@@ -427,46 +439,49 @@ class StatesAppState extends State<StatesApp> {
 
     //Mejora1
     void mejora1() {
-      if (contadorMejora1 == 0 && monedasJugador >= precio1Mejora1) {
+      if (datosJugador.contador1 == 0 &&
+          datosJugador.monedas >= precio1Mejora1) {
         setState(() {
           //Seteamos el precio de la mejora
           precioMejoraGlobal1 = precio2Mejora1;
           //Actualizamos las monedas del jugador al realizar la compra
-          monedasJugador = monedasJugador - precio1Mejora1;
+          datosJugador.monedas = datosJugador.monedas - precio1Mejora1;
           //Sonido de la mejora
           player.play(AssetSource("SonidoEspada.mp3"));
         });
-        mejora1V1 = true;
+        datosJugador.mejora1V1 = 1;
 
         snackBars.mostrarMejoraComprada(context);
         golpeSencillo = golpeSencillo * 2;
-        contadorMejora1++;
+        datosJugador.contador1++;
       }
-      if (contadorMejora1 == 1 && monedasJugador >= precio2Mejora1) {
+      if (datosJugador.contador1 == 1 &&
+          datosJugador.monedas >= precio2Mejora1) {
         setState(() {
-          monedasJugador = monedasJugador - precio2Mejora1;
+          datosJugador.monedas = datosJugador.monedas - precio2Mejora1;
           precioMejoraGlobal1 = precio3Mejora1;
           player.play(AssetSource("SonidoEspada.mp3"));
         });
-        mejora1V2 = true;
+        datosJugador.mejora1V2 = 1;
 
         snackBars.mostrarMejoraComprada(context);
         golpeSencillo = golpeSencillo * 3;
-        contadorMejora1++;
+        datosJugador.contador1++;
       }
-      if (contadorMejora1 == 2 && monedasJugador >= precio3Mejora1) {
+      if (datosJugador.contador1 == 2 &&
+          datosJugador.monedas >= precio3Mejora1) {
         setState(() {
-          monedasJugador = monedasJugador - precio3Mejora1;
+          datosJugador.monedas = datosJugador.monedas - precio3Mejora1;
           player.play(AssetSource("SonidoEspada.mp3"));
         });
-        mejora1V3 = true;
+        datosJugador.mejora1V3 = 1;
         snackBars.mostrarMejoraComprada(context);
         snackBars.mostrarMaximaMejora(context);
         golpeSencillo = golpeSencillo * 4;
-        contadorMejora1++;
+        datosJugador.contador1++;
       }
       //Bufo extra
-      if (contadorMejora1 > 2 && mejora8Utilizada == false) {
+      if (datosJugador.contador1 > 2 && mejora8Utilizada == false) {
         setState(() {
           player.play(AssetSource("SonidoBufo.mp3"));
         });
@@ -1059,6 +1074,10 @@ class StatesAppState extends State<StatesApp> {
           : golpeGlobal = golpeSencillo;
     }
 
+    void salir(BuildContext context) {
+      Navigator.of(context).pushNamed("/Login");
+    }
+
     //Funcion para barra de vida mosntruo
     double controladorBarra(v) {
       setState(() {
@@ -1104,7 +1123,7 @@ class StatesAppState extends State<StatesApp> {
         home: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(listaMundos[indexImagen]),
+                    image: AssetImage(listaMundos[datosJugador.mundo]),
                     fit: BoxFit.cover)),
             child: Scaffold(
               backgroundColor: Colors.transparent,
@@ -1138,15 +1157,37 @@ class StatesAppState extends State<StatesApp> {
                                             Container(
                                                 child: IconButton(
                                                     onPressed: (() {
+                                                      print(
+                                                          "El numero del monstruo es de: " +
+                                                              datosJugador
+                                                                  .monstruo
+                                                                  .toString());
+
                                                       Comprobaciones
                                                           comprobacion =
-                                                          new Comprobaciones();
+                                                          Comprobaciones();
+                                                      //Llamamos a la funcion para ingresar los da
+
                                                       comprobacion
                                                           .ingresarDatosJugador(
-                                                        indexImagen,
-                                                        numeroMonstruo,
-                                                        monedasJugador,
-                                                      );
+                                                              datosJugador.id,
+                                                              datosJugador
+                                                                  .mundo,
+                                                              datosJugador
+                                                                  .monstruo,
+                                                              datosJugador
+                                                                  .monedas,
+                                                              datosJugador
+                                                                  .mejora1V1,
+                                                              datosJugador
+                                                                  .mejora1V2,
+                                                              datosJugador
+                                                                  .mejora1V3,
+                                                              datosJugador
+                                                                  .contador1);
+
+                                                      Navigator.of(context)
+                                                          .pushNamed("/Login");
                                                     }),
                                                     icon: Icon(Icons.abc)),
                                                 margin: EdgeInsets.only(
@@ -1303,7 +1344,7 @@ class StatesAppState extends State<StatesApp> {
                         child: Row(children: [
                           Container(
                             padding: EdgeInsets.only(right: 10),
-                            child: Text(monedasJugador.toString(),
+                            child: Text(datosJugador.monedas.toString(),
                                 style: TextStyle(
                                     fontSize: 25, color: Colors.white)),
                           ),
@@ -1590,7 +1631,8 @@ class StatesAppState extends State<StatesApp> {
                                       alignment: Alignment.topCenter,
                                       child: Container(
                                         color: incrementoMejoras
-                                            .incremento1Mejora1(mejora1V1),
+                                            .incremento1Mejora1(
+                                                datosJugador.mejora1V1),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -1600,7 +1642,8 @@ class StatesAppState extends State<StatesApp> {
                                       alignment: Alignment.topCenter,
                                       child: Container(
                                         color: incrementoMejoras
-                                            .incremento2Mejora1(mejora1V2),
+                                            .incremento2Mejora1(
+                                                datosJugador.mejora1V2),
                                         width: 30,
                                         height: 10,
                                       ),
@@ -1610,7 +1653,8 @@ class StatesAppState extends State<StatesApp> {
                                       alignment: Alignment.topCenter,
                                       child: Container(
                                         color: incrementoMejoras
-                                            .incremento3Mejora1(mejora1V3),
+                                            .incremento3Mejora1(
+                                                datosJugador.mejora1V3),
                                         width: 30,
                                         height: 10,
                                       ),

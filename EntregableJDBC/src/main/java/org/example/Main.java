@@ -5,18 +5,12 @@ import com.sun.xml.internal.ws.addressing.WsaActionUtil;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
-<<<<<<< HEAD
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-=======
-import java.sql.*;
 
-
-
-
->>>>>>> ee19fc0222387d6cdd9881273d62ba02bf7db4bb
 public class Main
 {
     public static void main( String[] args ) throws SQLException {
