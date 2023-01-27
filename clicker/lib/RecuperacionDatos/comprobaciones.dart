@@ -45,6 +45,29 @@ class Comprobaciones {
   }
 
   //Retornar DatosJugador
+  Future<bool> borrarUsaurio(Jugador jugador) async {
+    final conexion = await MySqlConnection.connect(ConnectionSettings(
+        host: "10.0.2.2", port: 3307, user: "root", db: "nelson"));
+
+    Usuario usuario = new Usuario(id: 0, nombre: "", contrasena: "");
+
+    String sql = "DELETE from jugador where Id_Usuario ='" +
+        jugador.id.toString() +
+        "'";
+   
+    var resultQuery = await conexion.query(sql);
+
+    await conexion.close();
+    return true;
+  }
+
+
+
+
+
+
+
+  //Retornar DatosJugador
   Future<Usuario> retornarIdUsuario(String nombre) async {
     final conexion = await MySqlConnection.connect(ConnectionSettings(
         host: "10.0.2.2", port: 3307, user: "root", db: "nelson"));

@@ -1165,7 +1165,9 @@ class StatesAppState extends State<StatesApp> {
 
                                                       Comprobaciones
                                                           comprobacion =
-                                                          Comprobaciones();
+                                                          Comprobaciones(
+                                                            
+                                                          );
                                                       //Llamamos a la funcion para ingresar los da
 
                                                       comprobacion
@@ -1233,10 +1235,16 @@ class StatesAppState extends State<StatesApp> {
                                                     border: Border.all(
                                                         color: Colors.white)),
                                                 child: IconButton(
-                                                    onPressed: () =>
-                                                        setState(() {
-                                                          player2.stop();
-                                                        }),
+                                                    onPressed:() {
+                                                      Comprobaciones comprobaciones = Comprobaciones();
+                                                      comprobaciones.borrarUsaurio(datosJugador);
+                                                      snackBars.usuarioBorrado(context);
+                                                      Navigator.of(context)
+                                                          .pushNamed("/Login");
+
+                                                    },
+                                                        
+                                                       
                                                     icon: Icon(Icons
                                                         .speaker_notes_off),
                                                     color: Colors.white)),
@@ -1244,10 +1252,35 @@ class StatesAppState extends State<StatesApp> {
                                                 margin:
                                                     EdgeInsets.only(left: 10),
                                                 child: Text(
-                                                  "Stop",
+                                                  "Borrar ",
                                                   style: TextStyle(
                                                       color: Colors.white),
-                                                ))
+                                                 )),
+                                                //Container( child: IconButton(
+                                                //     onPressed: (() {
+                                                //       print(
+                                                //           "El numero del monstruo es de: " +
+                                                //               datosJugador
+                                                //                   .monstruo
+                                                //                   .toString());
+
+                                                //       Comprobaciones
+                                                //           comprobacion =
+                                                //           Comprobaciones(
+                                                            
+                                                //           );
+                                                //       //Llamamos a la funcion para ingresar los da
+
+                                                //       comprobacion
+                                                //           .borrarUsaurio(
+                                                //               datosJugador);
+
+                                                //       Navigator.of(context)
+                                                //           .pushNamed("/Login");
+                                                //     }),
+                                                //     icon: Icon(Icons.ac_unit)),
+                                                // margin: EdgeInsets.only(
+                                                //     top: 60, bottom: 10, right: 18)),
                                           ],
                                         )),
                                       ]),

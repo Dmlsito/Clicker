@@ -237,4 +237,19 @@ class SnackBars {
     );
     ScaffoldMessenger.of(context).showSnackBar(snb);
   }
+   void usuarioBorrado(BuildContext context) {
+    final snb = SnackBar(
+      backgroundColor: Colors.red,
+      content: Row(
+        children: [
+          Icon(Icons.thumb_up),
+          SizedBox(
+            width: 20,
+          ),
+          Text("Usuario borrado ")
+        ],
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snb);
+  }
 }
