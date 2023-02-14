@@ -27,8 +27,6 @@ double moveToLeft = anchoPantalla * 0.4;
 bool moveToLeftFish = false;
 bool moveToRigthFish = false;
 
- 
-
 class Juego extends State<statesJuego>{
   @override
   Widget build(BuildContext context) {
