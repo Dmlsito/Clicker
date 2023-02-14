@@ -62,18 +62,7 @@ flutter:
 
   assets: 
     
-    - assets/btnStart.png
-    - assets/bolsaDinero.png
-    - assets/silueta.png
-    - assets/Fondo.jpg
-    - assets/Trofeo.png
-    - assets/FondoTrofeo.jpg
-    - assets/cartel.png
-    - assets/BienHecho.png
-    - assets/fondoFinal.png
-    - assets/senal.png
-    - assets/FondoMonedas2.jpg
-    - assets/guide.png
+    - assets/images/
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

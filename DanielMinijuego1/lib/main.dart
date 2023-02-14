@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/Minijuego1",
       routes: {
         "/Minijuego1": (BuildContext context) => Minijuego1(),
-        "/Prueba": (BuildContext context) => Prueba()
+        "/SecondScreem": (BuildContext context) => Prueba()
       },
     );
   }

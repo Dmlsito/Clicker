@@ -38,6 +38,11 @@ bool objeto4Conseguido = false;
 bool objeto5Conseguido = false;
 
 bool botonOculto = true;
+bool imagenUp1 = false;
+bool imagenUp2 = false;
+bool imagenUp3 = false;
+bool imagenUp4 = false;
+bool imagenUp5 = false;
 
 Timer? timerCaidaObeto;
 
@@ -46,6 +51,7 @@ Timer? timerPartida;
 Timer? timerPop;
 
 int contadorTiempo = 0;
+int moneyBags = 0;
 
 class StatesMinijuego1 extends StatefulWidget {
   @override
@@ -62,32 +68,17 @@ String imagenEnBlanco = "";
 
 bool controlClickBoton = true;
 
-String imagenDinero1Invisible = "assets/bolsaDinero.png";
-String imagenDinero2Invisible = "assets/bolsaDinero.png";
-String imagenDinero3Invisible = "assets/bolsaDinero.png";
-String imagenDinero4Invisible = "assets/bolsaDinero.png";
-String imagenDinero5Invisible = "assets/bolsaDinero.png";
+
 
 double leftGuide = 60;
 
-List<String> listaImagenesDineroInvisible = [
-  imagenDinero1Invisible,
-  imagenDinero2Invisible,
-  imagenDinero3Invisible,
-  imagenDinero4Invisible,
-  imagenDinero5Invisible,
-];
 
-List<String> listaImagenesDinero = [
-  imagenDinero1,
-  imagenDinero2,
-  imagenDinero3,
-  imagenDinero4,
-  imagenDinero5
-];
+
+
 int contadorTimerFinal = 0;
 
 int game = 0;
+int counterGame = 0;
     late Timer timerGame;
 
 
@@ -111,7 +102,7 @@ class juego extends State<StatesMinijuego1> {
         home: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage("assets/Fondo.jpg"), fit: BoxFit.cover)),
+                    image: AssetImage("assets/images/Fondo.jpg"), fit: BoxFit.cover)),
             child: Scaffold(
               backgroundColor: Colors.transparent,
               body: Stack(
@@ -121,23 +112,23 @@ class juego extends State<StatesMinijuego1> {
                       width: 50,
                       margin: EdgeInsets.only(
                           top: top1, right: anchoPantalla * 0.88),
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image:
-                                  AssetImage(listaImagenesDineroInvisible[0]))),
+                      
                       duration: Duration(milliseconds: 500),
                       child: InkWell(
+                         child: !imagenUp1 ? bolsaDinero1(): null,
                         onTap: () {
+                          moneyBags ++;
+                           imagenUp1 = true;
                           //Cada animatedContainer tendra su propio index para poder colocarnos en la posicion correcta
                           //de cada lista
                           int index = 0;
                           //Tendremos que setear a true esta variable para controlar que hemos obtenido
                           //la bolsa de dinero
                           objeto1Conseguido = true;
-                          mostrarBolsasDinero(index);
-                          desaparecerBolsaDinero(index);
+                          
+                          
                           //Tendremos que llamar a esta funcion en cada animatedContainer para evaluar si el usuario ha ganado o no
-                          ganador(context);
+                          
                         },
                       )),
                   AnimatedContainer(
@@ -145,37 +136,37 @@ class juego extends State<StatesMinijuego1> {
                       width: 50,
                       margin: EdgeInsets.only(
                           top: top2, left: anchoPantalla * 0.88),
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image:
-                                  AssetImage(listaImagenesDineroInvisible[1]))),
                       duration: Duration(milliseconds: 500),
                       child: InkWell(
+                        child: !imagenUp2 ? bolsaDinero2(): null,
                         onTap: () {
+                          moneyBags ++;
+                          imagenUp2 = true;
                           int index = 1;
                           objeto2Conseguido = true;
-                          desaparecerBolsaDinero(index);
-                          mostrarBolsasDinero(index);
-                          ganador(context);
+                         
+                          
                         },
                       )),
+                      
                   AnimatedContainer(
                       height: 50,
                       width: 50,
                       margin:
                           EdgeInsets.only(top: top3, left: anchoPantalla * 0.5),
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image:
-                                  AssetImage(listaImagenesDineroInvisible[2]))),
+                          
+                      
                       duration: Duration(milliseconds: 500),
                       child: InkWell(
+                        child: !imagenUp3 ? bolsaDinero3(): null,
                         onTap: () {
+                          moneyBags ++;
+                          imagenUp3 = true;
                           int index = 2;
                           objeto3Conseguido = true;
-                          desaparecerBolsaDinero(index);
-                          mostrarBolsasDinero(index);
-                          ganador(context);
+                         
+                         
+                          
                         },
                       )),
                   AnimatedContainer(
@@ -183,18 +174,18 @@ class juego extends State<StatesMinijuego1> {
                       width: 50,
                       margin: EdgeInsets.only(
                           top: top4, left: anchoPantalla * 0.23),
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image:
-                                  AssetImage(listaImagenesDineroInvisible[3]))),
+                     
                       duration: Duration(milliseconds: 500),
                       child: InkWell(
+                        child: !imagenUp4 ? bolsaDinero4(): null,
                         onTap: () {
+                           moneyBags ++;
+                          imagenUp4 = true;
                           int index = 3;
                           objeto4Conseguido = true;
-                          desaparecerBolsaDinero(index);
-                          mostrarBolsasDinero(index);
-                          ganador(context);
+                          
+                        
+                          
                         },
                       )),
                   AnimatedContainer(
@@ -202,18 +193,17 @@ class juego extends State<StatesMinijuego1> {
                       width: 50,
                       margin: EdgeInsets.only(
                           top: top5, left: anchoPantalla * 0.70),
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image:
-                                  AssetImage(listaImagenesDineroInvisible[4]))),
+                      
                       duration: Duration(milliseconds: 500),
                       child: InkWell(
+                        child: !imagenUp5 ? bolsaDinero5(): null,
                         onTap: () {
+                          moneyBags ++;
+                          imagenUp5 = true;
                           int index = 4;
                           objeto5Conseguido = true;
-                          desaparecerBolsaDinero(index);
-                          mostrarBolsasDinero(index);
-                          ganador(context);
+                         
+                     
                         },
                       )),
                   
@@ -228,54 +218,38 @@ class juego extends State<StatesMinijuego1> {
                             width: 50,
                             height: 50,
                             margin: EdgeInsets.only(right: 20),
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(listaImagenesDinero[0]))),
+                           child: imagenUp1 ? bolsaDinero1Lista(): null
                           ),
                           Container(
                               width: 50,
                               height: 50,
                               margin: EdgeInsets.only(right: 20),
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage(listaImagenesDinero[1])))),
+                              child: imagenUp2 ? bolsaDinero2Lista(): null),
                           Container(
                               width: 50,
                               height: 50,
                               margin: EdgeInsets.only(right: 20),
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage(listaImagenesDinero[2])))),
+                              child: imagenUp3 ? bolsaDinero3Lista(): null),
                           Container(
                               width: 50,
                               height: 50,
                               margin: EdgeInsets.only(right: 20),
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage(listaImagenesDinero[3])))),
+                              child: imagenUp4 ? bolsaDinero4Lista(): null),
                           Container(
                               width: 50,
                               height: 50,
                               margin: EdgeInsets.only(right: 20),
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage(listaImagenesDinero[4]))))
+                              child: imagenUp5 ? bolsaDinero5Lista(): null)
                         ],
                       )),
                   AnimatedPositioned(
                       top: alturaPantalla * 0.5 - ((99 * 0.37 / 2)),
                       // left: widthA0.5-((8540.37)/2),
                       left: leftGuide,
-                      duration: const Duration(milliseconds: 1000),
+                      duration: const Duration(milliseconds: 800),
                       child: Container(
-                        decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage("assets/guide.png"),
-                                fit: BoxFit.fitWidth)),
+                        child: Image.asset("assets/images/guide.png", fit: BoxFit.fitWidth),
+                               
                         width: 738 * 0.37,
                         height: 99 * 0.37,
                       )),
@@ -284,8 +258,38 @@ class juego extends State<StatesMinijuego1> {
             )));
 }
 
+ Widget bolsaDinero1(){
+  return Image.asset("assets/images/bolsaDinero.png");
+}
+ Widget bolsaDinero2(){
+  return Image.asset("assets/images/bolsaDinero.png");
+}
+ Widget bolsaDinero3(){
+  return Image.asset("assets/images/bolsaDinero.png");
+}
+ Widget bolsaDinero4(){
+  return Image.asset("assets/images/bolsaDinero.png");
+}
+ Widget bolsaDinero5(){
+  return Image.asset("assets/images/bolsaDinero.png");
+}
+ Widget bolsaDinero1Lista(){
+  return Image.asset("assets/images/bolsaDinero.png");
+}
+ Widget bolsaDinero2Lista(){
+  return Image.asset("assets/images/bolsaDinero.png");
+}
+ Widget bolsaDinero3Lista(){
+  return Image.asset("assets/images/bolsaDinero.png");
+}
+ Widget bolsaDinero4Lista(){
+  return Image.asset("assets/images/bolsaDinero.png");
+}
+ Widget bolsaDinero5Lista(){
+  return Image.asset("assets/images/bolsaDinero.png");
+}
   void startGame() {
-      const oneSec = Duration(milliseconds: 500);
+      const oneSec = Duration(milliseconds: 1000);
       timerGame = Timer.periodic(
         oneSec,
         (Timer timerGame) {
@@ -294,21 +298,37 @@ class juego extends State<StatesMinijuego1> {
               leftGuide = 600;
               game++;
             });
-          } else {
-            //TIMER EMPEZAR JUEGO
-             timerGame.cancel();
-               caidaObjeto1();
-        caidaObjeto2();
-        caidaObjeto3();
-        caidaObjeto4();
-        caidaObjeto5();
-        ocultarBoton();
+          }
+          if(game == 2){
+            timerGame.cancel();
+            
+            
             
           }
         },
       );
     }
+void gameTime(){
+    timerGame = Timer.periodic(Duration(seconds: 1), (timer) { 
+      setState(() {
+        counterGame ++;
+        if(counterGame == 20){
+          showDialog(
+          barrierColor: Colors.white,
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => AlertDialog(actions: <Widget>[
+                Stack(children: [Container(child: Center(child: Text("Has perdido")))])
+              ]));
+        }
+        if(counterGame == 28 || moneyBags == 5 ){
+          timer.cancel();
+          Navigator.pushNamed(context, "/SecondScreem");
+        }
+      });
 
+    });
+  }
 //Funcion que iniciara el programa
 
   @override
@@ -316,7 +336,15 @@ class juego extends State<StatesMinijuego1> {
     // TODO: implement initState
     super.initState();
     startGame();
+    gameTime();
+    caidaObjeto1();
+             caidaObjeto2();
+             caidaObjeto3();
+             caidaObjeto4();
+             caidaObjeto5();
   }
+
+  
 
 //Funciones para controlar la caida de los objetos
   double caidaObjeto1() {
@@ -343,10 +371,7 @@ class juego extends State<StatesMinijuego1> {
     timerCaidaObeto = Timer.periodic(Duration(milliseconds: 500), (timer2) {
       Random random = Random();
       int caida = random.nextInt(100) + 50;
-      if (ganador(context)) {
-        top2 = 50;
-        timer2.cancel();
-      } else {
+     
         setState(() {
           top2 += caida;
         });
@@ -354,7 +379,7 @@ class juego extends State<StatesMinijuego1> {
         if (top2 > alturaPantalla * 0.75) {
           top2 = 50;
         }
-      }
+      
     });
 
     return top2;
@@ -364,10 +389,7 @@ class juego extends State<StatesMinijuego1> {
     timerCaidaObeto = Timer.periodic(Duration(milliseconds: 500), (timer3) {
       Random random = Random();
       int caida = random.nextInt(100) + 50;
-      if (ganador(context)) {
-        top3 = 50;
-        timer3.cancel();
-      } else {
+     
         setState(() {
           top3 += caida;
         });
@@ -375,7 +397,7 @@ class juego extends State<StatesMinijuego1> {
         if (top3 > alturaPantalla * 0.75) {
           top3 = 50;
         }
-      }
+      
     });
 
     return top3;
@@ -385,10 +407,7 @@ class juego extends State<StatesMinijuego1> {
     timerCaidaObeto = Timer.periodic(Duration(milliseconds: 500), (timer4) {
       Random random = Random();
       int caida = random.nextInt(100) + 50;
-      if (ganador(context)) {
-        top4 = 50;
-        timer4.cancel();
-      } else {
+      
         setState(() {
           top4 += caida;
         });
@@ -396,7 +415,7 @@ class juego extends State<StatesMinijuego1> {
         if (top4 > alturaPantalla * 0.75) {
           top4 = 50;
         }
-      }
+      
     });
 
     return top4;
@@ -406,98 +425,27 @@ class juego extends State<StatesMinijuego1> {
     timerCaidaObeto = Timer.periodic(Duration(milliseconds: 500), (timer5) {
       Random random = Random();
       int caida = random.nextInt(100) + 50;
-      if (ganador(context)) {
-        top5 = 50;
-        timer5.cancel();
-      } else {
+      
         setState(() {
           top5 += caida;
         });
         if (top5 > alturaPantalla * 0.75) {
           top5 = 50;
         }
-      }
+      
     });
 
     return top5;
   }
 }
 
-// Funcion para detectar al ganador
-bool ganador(BuildContext context) {
-  if (objeto1Conseguido &&
-      objeto2Conseguido &&
-      objeto3Conseguido &&
-      objeto4Conseguido &&
-      objeto5Conseguido) {
-    //Una vez que se haya enseñado la pantalla intermedia donde se haya indicado que el usuario ha ganado la partida
-    //al cabo de un par de segundos se ejecutara un push al siguiente juego
-    timerPop = Timer.periodic(Duration(milliseconds: 2000), (timer) {
-      contadorTiempo++;
-      if (contadorTiempo == 6) {
-        Navigator.of(context).pushNamed("/Prueba");
-      }
-    });
-    showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (context) => AlertDialog(
-              actions: <Widget>[
-                Stack(children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/fondoFinal.png"),
-                            fit: BoxFit.cover)),
-                    width: anchoPantalla,
-                    height: alturaPantalla * 0.78,
-                  ),
-                  FadeInDown(
-                      duration: Duration(milliseconds: 2000),
-                      child: Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.only(top: alturaPantalla * 0.08),
-                          child: Text("NIVEL SUPERADO",
-                              style:
-                                  TextStyle(fontFamily: "art", fontSize: 25)))),
-                  Container(
-                      margin: EdgeInsets.only(top: alturaPantalla * 0.2),
-                      child:
-                          Image.asset("assets/cartel.png", fit: BoxFit.cover)),
-                  Container(
-                      margin: EdgeInsets.only(
-                          left: anchoPantalla * 0.25,
-                          top: alturaPantalla * 0.33),
-                      width: 100,
-                      child: Image.asset("assets/Trofeo.png")),
-                  Container(
-                      width: 100,
-                      height: 150,
-                      margin: EdgeInsets.only(
-                          top: alturaPantalla * 0.6,
-                          left: anchoPantalla * 0.55),
-                      child: Image.asset("assets/BienHecho.png"))
-                ])
-              ],
-            ));
-    return true;
-  } else
-    return false;
-}
+
 
 // Funcion para detectar que bolsas de dinero estan recogidas
-void mostrarBolsasDinero(int index) {
-  for (int i = 0; i < listaImagenesDinero.length; i++) {
-    listaImagenesDinero[index] = "assets/bolsaDinero.png";
-  }
-}
+
 
 // Funcion para hacer desaparecer las bolsas de dinero una vez ya clickadas
-void desaparecerBolsaDinero(int index) {
-  for (int i = 0; i < listaImagenesDineroInvisible.length; i++) {
-    listaImagenesDineroInvisible[index] = " ";
-  }
-}
+
 
 //Funcion para ocultar el boton una vez lo hayamos pulsado
 //IMPORTANTE -> EN LA VERSION FINAL NO HARA FALTA ESTO
