@@ -1,0 +1,4 @@
+#Fri Feb 10 08:51:12 CET 2023
+base.0=C\:\\Users\\daniel\\Documents\\GitHub\\Tarea-de-contornos-github\\Latas\\latas\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
